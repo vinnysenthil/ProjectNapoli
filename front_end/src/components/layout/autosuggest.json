@@ -1,0 +1,18 @@
+{
+  "title": "properties",
+  "name": [
+    { "label": "Marketing", "style": "dest" },
+
+    { "label": "Sales", "style": "dest" },
+    { "label": "Finance", "style": "dest" },
+    {
+      "label": "Carlos Vela"
+    },
+    {
+      "label": "Franck Ribery"
+    },
+    {
+      "label": "Arjen Robben"
+    }
+  ]
+}
