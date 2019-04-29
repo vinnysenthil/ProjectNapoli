@@ -3,3 +3,8 @@
 /package-lock.json
 /config/keys_dev.js
 error.log
+
+# Exclude manifest
+build/manifest
+build/manifest/manifest.yaml
+manifest.yaml
