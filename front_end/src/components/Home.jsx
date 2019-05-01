@@ -1,26 +1,10 @@
-// import { withAuth } from "@okta/okta-react";
-// import React, { Component } from "react";
 import { Button, Header } from "semantic-ui-react";
 import { checkAuthentication } from "../helpers";
 import { getDepartments } from "../actions/overviewActions";
-// import { connect } from "react-redux";
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-// import { FilePond, registerPlugin } from "react-filepond";
-// import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
-// import FilePondPluginImagePreview from "filepond-plugin-image-preview";
-// import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
-// import { Button, TextField, Typography } from "@material-ui/core";
-// import { uploadNotebook } from "../../actions/uploadActions";
-// import ChipInput from "material-ui-chip-input";
-// import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-// import moment from "moment";
-// import MDSpinner from "react-md-spinner";
-// import Done from "@material-ui/icons/Done";
-// import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-// import "filepond/dist/filepond.min.css";
 import { withAuth } from "@okta/okta-react";
 
 class Home extends Component {
@@ -137,8 +121,6 @@ class Home extends Component {
 const mapStateToProps = state => ({
   departments: state.departments
 });
-
-// export default withAuth(Home);
 
 export default connect(
   mapStateToProps,
