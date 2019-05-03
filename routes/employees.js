@@ -13,6 +13,11 @@ router.get('/:emp_no', async function(req, res, next) {
             model: sequelize.Salaries,
             where: { emp_no: Sequelize.col('employees.emp_no') },
             attributes: ['salary', 'from_date', 'to_date']
+        },
+        {
+            model: sequelize.Titles,
+            where: { emp_no: Sequelize.col('employees.emp_no') },
+            attributes: ['title', 'from_date', 'to_date']
         }]
 
     }).then((empInfo) => {

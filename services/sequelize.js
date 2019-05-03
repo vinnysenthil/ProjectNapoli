@@ -38,8 +38,8 @@ const Titles = TitlesModel(sequelize, Sequelize);
 
 
 // Associations
-Titles.belongsTo(Employees);
-Employees.hasMany(Titles);
+Employees.hasMany(Titles, {foreignKey: 'emp_no', sourceKey: 'emp_no'});
+Titles.belongsTo(Employees, {foreignKey: 'emp_no', targetKey: 'emp_no'});
 
 Employees.hasMany(Salaries, {foreignKey: 'emp_no', sourceKey: 'emp_no'});
 Salaries.belongsTo(Employees, {foreignKey: 'emp_no', targetKey: 'emp_no'});
