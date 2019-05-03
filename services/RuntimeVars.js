@@ -18,6 +18,10 @@ try {
       PORT:             manifest.db.port,
       USERNAME:         manifest.db.username,
       PASSWORD:         manifest.db.password
+    }),
+    OKTA: Object.freeze({
+      ISSUER:             manifest.okta.issuer,
+      CLIENTID:           manifest.okta.clientid
     })
   });
 
@@ -28,6 +32,10 @@ try {
       PORT:             process.env.DB_PORT,
       USERNAME:         process.env.DB_USERNAME,
       PASSWORD:         process.env.DB_PASSWORD
+    }),
+    OKTA: Object.freeze({
+      ISSUER:           process.env.OKTA_ISSUER,
+      CLIENTID:         process.env.OKTA_CLIENTID
     })
   });
 }

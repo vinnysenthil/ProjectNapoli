@@ -1,25 +1,38 @@
 var express = require("express");
-var session = require('express-session');
-// var passport = require("passport");  TODO - Fix to work with MySQL
 var path = require("path");
 var logger = require("winston");
-var sequelize = require('./services/sequelize');
+var cors = require("cors");
+var auth = require('./middlewares/auth');
 
 // API routes
 var mainRouter = require('./routes/index');
 
-
-// get some functionalities from express library like get() function
 var app = express();
 
-// Passport middleware
-// app.use(passport.initialize());  TODO - Fix to work with MySQL
+// app.use(auth)
 
-// bring passport library to config/passport.js
-// require("./config/passport")(passport);  TODO - Fix to work with MySQL
+// Manually Enable Cross-Origin Resource Sharing (CORS) 
+var corsManual = function (req, res, next) {
+  
+  res.header('Access-Control-Allow-Origin', '*'); // ALLOWING REQUESTS FROM ALL ORIGINS
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, withcredentials');
+  res.header('Access-Control-Allow-Credentials', true);
+
+  if (req.method === 'OPTIONS') {
+    // OPTIONS requests should immediately respond back to the client with the CORS headers.
+    res.status(200).end();
+  
+  } else {
+    // Otherwise, continue to next.
+    next();
+  }
+};
+
+// Enable CORS Globally
+app.use(cors());
 
 app.use('/api', mainRouter);
-
 // Server static assets if in production
 if (process.env.NODE_ENV === "production") {
   // Set static folder
