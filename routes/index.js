@@ -13,4 +13,8 @@ router.get('/depts', async function(req, res, next) {
   res.status(200).send(allDepts);
 });
 
+// Load other routes
+router.use('/employees', require('./employees'));
+router.use('/salaries', require('./salaries'));
+
 module.exports = router;
