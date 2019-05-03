@@ -1,13 +1,20 @@
 var express = require('express');
 const sequelize = require('../services/sequelize');
+const Sequelize = require('sequelize');
 var router = express.Router();
 
 
 router.get('/:emp_no', async function(req, res, next) {
 
-    sequelize.Employees.findOne({ 
-        where: {emp_no: parseInt(req.params.emp_no) },
-        attributes: ['birth_date', 'first_name', 'last_name', 'gender', 'hire_date'] 
+    const employeeNo = parseInt(req.params.emp_no);
+
+    sequelize.Employees.findByPk(employeeNo, {
+        include: [{ 
+            model: sequelize.Salaries,
+            where: { emp_no: Sequelize.col('employees.emp_no') },
+            attributes: ['salary', 'from_date', 'to_date']
+        }]
+
     }).then((empInfo) => {
         return res.status(200).json(empInfo);
     }).catch((err) => {

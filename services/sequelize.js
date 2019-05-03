@@ -38,7 +38,12 @@ const Titles = TitlesModel(sequelize, Sequelize);
 
 
 // Associations
-// To Be Added
+Titles.belongsTo(Employees);
+Employees.hasMany(Titles);
+
+Employees.hasMany(Salaries, {foreignKey: 'emp_no', sourceKey: 'emp_no'});
+Salaries.belongsTo(Employees, {foreignKey: 'emp_no', targetKey: 'emp_no'});
+
 
 module.exports = {
   instance: sequelize,

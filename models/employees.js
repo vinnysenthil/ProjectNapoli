@@ -5,7 +5,7 @@
 
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define('employees', {
-      emp_no: { type: DataTypes.NUMBER, allowNull: false, unique: true },
+      emp_no: { type: DataTypes.NUMBER, allowNull: false, primaryKey: true },
       birth_date: { type: DataTypes.DATE, allowNull: false },
       first_name: { type: DataTypes.STRING, allowNull: false },
       last_name: { type: DataTypes.STRING, allowNull: false },
