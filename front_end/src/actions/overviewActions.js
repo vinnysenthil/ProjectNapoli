@@ -4,13 +4,16 @@ import { GET_DEPT } from "./types";
 
 export const getDepartments = () => dispatch => {
   axios
-    .get("/index/dept/")
-    .then(res =>
-      dispatch({
-        type: GET_DEPT,
-        payload: res.data
-      })
+    .get("localhost:172/api/depts")
+    .then(
+      res =>
+        console.log(res.data) +
+        dispatch({
+          type: GET_DEPT,
+          payload: res.data
+        })
     )
+
     .catch(err => {
       console.log("ERROR: GET_DEPT DATA NOT RECEIVED");
     });

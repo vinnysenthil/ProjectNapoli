@@ -16,8 +16,8 @@ const styles = theme => ({
     marginLeft: 0,
     height: "60%",
     marginTop: 10,
-
-    width: "100%"
+    marginLeft: 35,
+    width: "67%"
   },
   searchIcon: {
     width: theme.spacing.unit * 9,
@@ -26,10 +26,11 @@ const styles = theme => ({
     pointerEvents: "none",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    color: "#000000"
   },
   inputRoot: {
-    color: "inherit",
+    color: "#000000",
     width: "100%"
   },
   inputInput: {

@@ -10,3 +10,6 @@ export const SUBMIT_QUERY = "SUBMIT_QUERY";
 
 // OVERVIEW
 export const GET_DEPT = "GET_DEPT";
+
+// EMPLOYEE TYPES
+export const GET_EMPLOYEE = "GET_EMPLOYEE";

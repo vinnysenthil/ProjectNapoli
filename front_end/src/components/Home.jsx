@@ -1,11 +1,25 @@
 import { Button, Header } from "semantic-ui-react";
 import { checkAuthentication } from "../helpers";
-import { getDepartments } from "../actions/overviewActions";
+import PropTypes from "prop-types";
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { withAuth } from "@okta/okta-react";
+import Table from "@material-ui/core/Table";
+import TableCell from "@material-ui/core/TableCell";
+import TableRow from "@material-ui/core/TableRow";
+import TableBody from "@material-ui/core/TableBody";
+
+// Actions
+import { getCurrentEmployee } from "../actions/employeeActions";
+import { getDepartments } from "../actions/overviewActions";
+
+let id = 0;
+function createData(firstCol, secondCol) {
+  id += firstCol + 1;
+  return { id, firstCol, secondCol };
+}
 
 class Home extends Component {
   constructor(props) {
@@ -17,6 +31,8 @@ class Home extends Component {
 
   async componentDidMount() {
     this.checkAuthentication();
+    this.props.getDepartments();
+    // this.props.getCurrentEmployee();
   }
 
   async componentDidUpdate() {
@@ -28,84 +44,87 @@ class Home extends Component {
   }
 
   render() {
-    const resourceServerExamples = [
-      {
-        label: "Node/Express Resource Server Example",
-        url:
-          "https://github.com/okta/samples-nodejs-express-4/tree/master/resource-server"
-      },
-      {
-        label: "Java/Spring MVC Resource Server Example",
-        url:
-          "https://github.com/okta/samples-java-spring-mvc/tree/master/resource-server"
-      }
+    const { employeeData } = this.props.employee;
+
+    let EmployeeDataRows;
+
+    EmployeeDataRows = [
+      createData("Employee ID:", employeeData.emp_no),
+      createData("DOB:", employeeData.birth_date),
+      createData("Firstname:", employeeData.first_name),
+      createData("Lastname:", employeeData.last_name),
+      createData("Gender:", employeeData.gender),
+      createData("Hire Date:", employeeData.hire_date),
+      createData(
+        "Salary:",
+        "$ " +
+          employeeData.curr_salary
+            .toFixed(2)
+            .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+      ),
+      createData("Department:", employeeData.curr_dept),
+      createData("Title:", employeeData.curr_title)
     ];
 
     return (
       <div>
         {this.state.authenticated !== null && (
           <div>
-            <Header as="h1">Implicit Flow w/ Okta Hosted Login Page</Header>
             {this.state.authenticated && (
               <div>
+                <Header as="h1">Project Napoli Employee Dashboard</Header>
                 <p>Welcome back, {this.state.userinfo.name}!</p>
-                <p>
-                  You have successfully authenticated against your Okta org, and
-                  have been redirected back to this application. You now have an
-                  ID token and access token in local storage. Visit the{" "}
-                  <a href="/profile">My Profile</a> page to take a look inside
-                  the ID token.
-                </p>
-                <h3>Next Steps</h3>
-                <p>
-                  Currently this application is a stand-alone front end
-                  application. At this point you can use the access token to
-                  authenticate yourself against resource servers that you
-                  control.
-                </p>
-                <p>
-                  This sample is designed to work with one of our resource
-                  server examples. To see access token authentication in action,
-                  please download one of these resource server examples:
-                </p>
-                <ul>
-                  {resourceServerExamples.map(example => (
-                    <li key={example.url}>
-                      <a href={example.url}>{example.label}</a>
-                    </li>
-                  ))}
-                </ul>
-                <p>
-                  Once you have downloaded and started the example resource
-                  server, you can visit the <a href="/messages">My Messages</a>{" "}
-                  page to see the authentication process in action.
-                </p>
+                <Link to="/employeeHistory">
+                  <Button id="login-button" primary>
+                    My History
+                  </Button>
+                </Link>
+                <br /> <br />
+                <div
+                  style={{
+                    color: "white",
+                    paddingLeft: 10,
+                    background:
+                      "linear-gradient(to right, #0c4b78, #3d4e96, #2c76a9)"
+                  }}
+                >
+                  EMPLOYEE DATA
+                </div>
+                <Table>
+                  <TableBody>
+                    {EmployeeDataRows.map(row => (
+                      <TableRow
+                        key={row.id}
+                        style={{
+                          padding: 0
+                        }}
+                      >
+                        <TableCell
+                          align="left"
+                          style={{
+                            paddingLeft: 5,
+                            paddingRight: 5,
+                            width: 150
+                          }}
+                        >
+                          {row.firstCol}
+                        </TableCell>
+                        <TableCell align="left" style={{ padding: 0 }}>
+                          {row.secondCol}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+                <br />
               </div>
             )}
             {!this.state.authenticated && (
               <div>
-                <p>
-                  If you&lsquo;re viewing this page then you have successfully
-                  started this React application.
-                </p>
-                <p>
-                  <span>This example shows you how to use the </span>
-                  <a href="https://github.com/okta/okta-oidc-js/tree/master/packages/okta-react">
-                    Okta React Library
-                  </a>
-                  <span> to add the </span>
-                  <a href="https://developer.okta.com/authentication-guide/implementing-authentication/implicit">
-                    Implicit Flow
-                  </a>
-                  <span> to your application.</span>
-                </p>
-                <p>
-                  When you click the login button below, you will be redirected
-                  to the login page on your Okta org. After you authenticate,
-                  you will be returned to this application with an ID token and
-                  access token. These tokens will be stored in local storage and
-                  can be retrieved at a later time.
-                </p>
+                <Header as="h1">Welcome to Project Napoli</Header>
+
+                <p>Please log in to access your Employee Dashboard.</p>
+
                 <Button id="login-button" primary onClick={this.login}>
                   Login
                 </Button>
@@ -118,11 +137,17 @@ class Home extends Component {
   }
 }
 
+Home.PropTypes = {
+  getDepartments: PropTypes.func.isRequired,
+  getCurrentEmployee: PropTypes.func.isRequired
+};
+
 const mapStateToProps = state => ({
-  departments: state.departments
+  overview: state.overview,
+  employee: state.employee
 });
 
 export default connect(
   mapStateToProps,
-  { getDepartments }
+  { getDepartments, getCurrentEmployee }
 )(withAuth(Home));

@@ -1,0 +1,85 @@
+.smallMenu {
+  display: none;
+}
+
+.navbarLogo {
+  position: relative;
+  left: 7%;
+}
+
+img.abode-logo {
+  position: relative;
+  width: 70px;
+  height: auto;
+}
+
+.abodeHome {
+  font-size: 28px;
+  font-weight: 500;
+  text-align: center;
+  position: relative;
+  left: 20px;
+  text-decoration: none;
+  color: white;
+  border-bottom: 0px;
+}
+
+.navButtons {
+  border: none;
+  margin: 4px 2px;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 600;
+  height: 45px;
+  border-radius: 10px;
+}
+
+.buttonSearch {
+  background-color: white;
+  color: black;
+  width: 98px;
+  position: relative;
+  border: none;
+  margin: 3px 2px;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 600;
+  height: 32px;
+  border-radius: 5px;
+  top: 5px;
+  padding-top: 0px !important;
+}
+
+.buttonBlue {
+  background-color: lightgrey;
+  color: black;
+  width: 108px;
+  position: relative;
+}
+
+.headerMenu {
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center;
+  position: relative;
+}
+
+.adjustMenuBurger {
+  left: 22%;
+  position: relative;
+}
+
+.headerfont {
+  color: #ffffff;
+}
+
+.menuBurger {
+  color: #ffffff;
+}
+
+.navbarContainer {
+  height: 102px;
+  overflow-x: hidden;
+  background-color: black; /* For browsers that do not support gradients */
+  /* background-image: linear-gradient(to right, #0c4b78, #3d4e96, #2c76a9); */
+}
