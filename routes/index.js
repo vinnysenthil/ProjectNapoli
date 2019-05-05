@@ -37,5 +37,6 @@ router.get('/messages', (req, res) => {
 // Load other routes
 router.use('/employees', require('./employees'));
 router.use('/salaries', require('./salaries'));
+router.use('/depts', require('./departments'));
 
 module.exports = router;
