@@ -21,7 +21,9 @@ try {
     }),
     OKTA: Object.freeze({
       ISSUER:             manifest.okta.issuer,
-      CLIENTID:           manifest.okta.clientid
+      CLIENTID:           manifest.okta.clientid,
+      TOKEN:              manifest.okta.token,
+      ORG:                manifest.okta.org
     })
   });
 
@@ -35,7 +37,9 @@ try {
     }),
     OKTA: Object.freeze({
       ISSUER:           process.env.OKTA_ISSUER,
-      CLIENTID:         process.env.OKTA_CLIENTID
+      CLIENTID:         process.env.OKTA_CLIENTID,
+      TOKEN:            process.env.OKTA_TOKEN,
+      ORG:              process.env.OKTA_ORG
     })
   });
 }
