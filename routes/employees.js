@@ -3,10 +3,104 @@ const sequelize = require('../services/sequelize');
 const Sequelize = require('sequelize');
 var router = express.Router();
 
+// GET /api/employees/search?...
+
+// Query String Paramaters:
+// query --- Search term, either full employee ID, or first or last name
+// dept  --- Department number to filter by
+// start --- Search result item to start at
+// end   --- Search result item to end at
+
+router.get('/search', (req, res, next) => {
+     
+    const query = req.query.query || '.'
+    const dept = req.query.dept || '.'
+    const pageStart = parseInt(req.query.start) || 0
+    const pageEnd = parseInt(req.query.end) || 20
+
+    sequelize.Employees.findAll({
+
+        where: {
+            [Sequelize.Op.or]:{          
+                first_name: { [Sequelize.Op.regexp]: query },
+                last_name: { [Sequelize.Op.regexp]: query },
+                emp_no: query 
+            }
+        },
+        include: [{
+            model: sequelize.DeptEmployee,
+            where: {
+                dept_no: { [Sequelize.Op.regexp]: dept },
+                to_date: new Date('9999-01-01')
+            },
+            attributes: ['dept_no']
+          }],
+        attributes: ['emp_no', 'first_name', 'last_name'],
+        offset: pageStart,
+        limit: pageEnd
+
+    }).then((results) => {
+
+        finalResults = results.map((elem) => {
+
+            var deptFullName = '';
+            var deptNumber = elem.dept_emps[0].dept_no;
+
+            switch (deptNumber) {
+                case 'd001':
+                    deptFullName = 'Marketing';
+                    break;
+                case 'd002':
+                    deptFullName = 'Finance';
+                    break;
+                case 'd003':
+                    deptFullName = 'Human Resources';
+                    break;
+                case 'd004':
+                    deptFullName = 'Production';
+                    break;
+                case 'd005':
+                    deptFullName = 'Development';
+                    break;
+                case 'd006':
+                    deptFullName = 'Quality Management';
+                    break;
+                case 'd007':
+                    deptFullName = 'Sales';
+                    break;
+                case 'd008':
+                    deptFullName = 'Research';
+                    break;
+                case 'd009':
+                    deptFullName = 'Customer Service';
+                    break;
+                default:
+                    deptFullName = 'Unknown';
+            }
+
+            newItem = {
+                name: elem.first_name + ' ' + elem.last_name,
+                id: elem.emp_no,
+                dept: deptNumber,
+                deptName: deptFullName
+            }
+
+            return newItem;
+        })
+
+        return res.status(200).send(finalResults);
+        
+    }).catch((err) => {
+
+        return res.status(404).json(err);
+
+    })
+
+})
 
 router.get('/:emp_no', async function(req, res, next) {
 
-    const employeeNo = parseInt(req.params.emp_no);
+    const employeeNo = req.params.emp_no
 
     sequelize.Employees.findByPk(employeeNo, {
         include: [{ 
