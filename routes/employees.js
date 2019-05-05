@@ -3,6 +3,50 @@ const sequelize = require('../services/sequelize');
 const Sequelize = require('sequelize');
 var router = express.Router();
 
+// GET /api/employees/check/:full_name
+
+// Pass full_name to see if Employee is a manager or not
+
+router.get('/check/:full_name', (req, res, next) => {
+    const fullName = req.params.full_name
+
+    var splitName = fullName.split(' ')
+
+    var authPack = {
+        id: 0,
+        manager: false
+    }
+
+    sequelize.Employees.findAll({
+        where: {
+            first_name: splitName[0],
+            last_name: splitName[1]
+        },
+        include: {
+            model: sequelize.DeptManager
+        },
+        attributes: ['emp_no']
+    }).then((emp) => {
+
+        authPack.id = emp[0].emp_no
+
+        if (emp[0].dept_managers.length){
+            authPack.manager = true
+            return res.status(200).json(authPack);
+        }
+
+        else {
+            return res.status(200).json(authPack);
+        }
+
+    }).catch((employeeErr) => {
+
+        return res.status(404).json(employeeErr);
+
+    }) // end Employees findAll
+
+});
+
 // GET /api/employees/search?...
 
 // Query String Paramaters:
