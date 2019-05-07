@@ -75,7 +75,9 @@ class Home extends Component {
       <div>
         {this.state.authenticated !== null && (
           <div>
-            {this.state.authenticated && (
+            {this.state.authenticated &&
+            this.props.employee.employeeCheck &&
+            this.props.employee.employeeData.fired === false ? (
               <div>
                 <Header as="h1">Project Napoli Employee Dashboard</Header>
                 <p>Welcome back, {this.state.userinfo.name}!</p>
@@ -123,7 +125,10 @@ class Home extends Component {
                 </Table>
                 <br />
               </div>
+            ) : (
+              <div>YOUR CONTRACT HAS BEEN TERMINATED</div>
             )}
+
             {!this.state.authenticated && (
               <div>
                 <Header as="h1">Welcome to Project Napoli</Header>

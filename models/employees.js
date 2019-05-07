@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
       gender: { type: DataTypes.ENUM(
           'M', 'F'
       ), allowNull: false },
-      hire_date: { type: DataTypes.DATE, allowNull: false }
+      hire_date: { type: DataTypes.DATE, allowNull: false },
+      fired: { type:DataTypes.BOOLEAN, allowNull: true}
     }, {
       underscored: true,
       freezeTableName: true,

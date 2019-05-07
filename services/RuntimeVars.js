@@ -21,7 +21,15 @@ try {
     }),
     OKTA: Object.freeze({
       ISSUER:             manifest.okta.issuer,
-      CLIENTID:           manifest.okta.clientid
+      CLIENTID:           manifest.okta.clientid,
+      TOKEN:              manifest.okta.token,
+      ORG:                manifest.okta.org
+    }),
+    TWITTER: Object.freeze({
+      CONSUMER_KEY:         manifest.twitter.consumerkey,
+      CONSUMER_SECRET:      manifest.twitter.consumersecret,
+      ACCESS_TOKEN_KEY:     manifest.twitter.accesstokenkey,
+      ACCESS_TOKEN_SECRET:  manifest.twitter.accesstokensecret
     })
   });
 
@@ -35,7 +43,15 @@ try {
     }),
     OKTA: Object.freeze({
       ISSUER:           process.env.OKTA_ISSUER,
-      CLIENTID:         process.env.OKTA_CLIENTID
+      CLIENTID:         process.env.OKTA_CLIENTID,
+      TOKEN:            process.env.OKTA_TOKEN,
+      ORG:              process.env.OKTA_ORG
+    }),
+    TWITTER: Object.freeze({
+      CONSUMER_KEY:         process.env.CONSUMER_KEY,
+      CONSUMER_SECRET:      process.env.CONSUMER_SECRET,
+      ACCESS_TOKEN_KEY:     process.env.ACCESS_TOKEN_KEY,
+      ACCESS_TOKEN_SECRET:  process.env.ACCESS_TOKEN_SECRET
     })
   });
 }

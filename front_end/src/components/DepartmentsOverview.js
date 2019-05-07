@@ -89,6 +89,13 @@ class DepartmentsOverview extends Component {
                               <Typography variant="h5" component="h2">
                                 {row.firstCol}
                               </Typography>
+                              <Button
+                                id="login-button"
+                                secondary
+                                onClick={this.onclickFire}
+                              >
+                                Fire Employee
+                              </Button>
                             </CardContent>
                           </Card>
                         </Link>
