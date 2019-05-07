@@ -83,11 +83,10 @@ router.post('/fire/:emp_no', (req, res, next) => {
         return res.status(404).send("Sequelize for Employee to fire failed")
 
     });
- 
 });
 
-
 // GET /api/employees/check/:full_name
+// Pass full_name to see if Employee is a manager or not
 router.get("/check/:full_name", (req, res, next) => {
   const fullName = req.params.full_name;
 
