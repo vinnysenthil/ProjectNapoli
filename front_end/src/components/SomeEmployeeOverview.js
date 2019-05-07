@@ -35,7 +35,7 @@ class SomeEmployeeOverview extends Component {
   }
 
   render() {
-    const { someEmployeeData } = this.props.employee;
+    const { someEmployeeData, employeeCheck } = this.props.employee;
 
     let EmployeeDataRows = [];
 
@@ -64,11 +64,13 @@ class SomeEmployeeOverview extends Component {
           <div>
             {this.state.authenticated && (
               <div>
-                <Link to="/employeeHistory">
-                  <Button id="login-button" secondary>
-                    Fire Employee
-                  </Button>
-                </Link>
+                {employeeCheck && employeeCheck.manager ? (
+                  <Link to="/employeeHistory">
+                    <Button id="login-button" secondary>
+                      Fire Employee
+                    </Button>
+                  </Link>
+                ) : null}
                 <br /> <br />
                 <div
                   style={{

@@ -46,7 +46,7 @@ class FiltersWindow extends Component {
   constructor() {
     super();
     this.state = {
-      departmentChosen: null
+      departmentChosen: "0"
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -54,6 +54,9 @@ class FiltersWindow extends Component {
 
   handleChange = event => {
     this.setState({ departmentChosen: event.target.value });
+
+    console.log("target value:" + event.target.value);
+    // this.setState({ departmentChosen: 3 });
   };
 
   // let departmentChosen = null;
@@ -126,47 +129,52 @@ class FiltersWindow extends Component {
                       onChange={this.handleChange}
                     >
                       <FormControlLabel
-                        value={1}
+                        value="0"
+                        control={<Radio />}
+                        label="All"
+                      />
+                      <FormControlLabel
+                        value="1"
                         control={<Radio />}
                         label="Marketing"
                       />
                       <FormControlLabel
-                        value={2}
+                        value="2"
                         control={<Radio />}
                         label="Finance"
                       />
                       <FormControlLabel
-                        value={3}
+                        value="3"
                         control={<Radio />}
                         label="Human Resources"
                       />
                       <FormControlLabel
-                        value={4}
+                        value="4"
                         control={<Radio />}
                         label="Production"
                       />{" "}
                       <FormControlLabel
-                        value={5}
+                        value="5"
                         control={<Radio />}
                         label="Development"
                       />{" "}
                       <FormControlLabel
-                        value={6}
+                        value="6"
                         control={<Radio />}
                         label="Quality Management"
                       />{" "}
                       <FormControlLabel
-                        value={7}
+                        value="7"
                         control={<Radio />}
                         label="Sales"
                       />{" "}
                       <FormControlLabel
-                        value={8}
+                        value="8"
                         control={<Radio />}
                         label="Research"
                       />{" "}
                       <FormControlLabel
-                        value={9}
+                        value="9"
                         control={<Radio />}
                         label="Customer Service"
                       />

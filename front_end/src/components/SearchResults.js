@@ -259,7 +259,7 @@ class SearchResults extends Component {
           </IconButton>
         </Grid>
         <Grid item>
-          <Typography variant="subtitle1">{1}</Typography>
+          <Typography variant="subtitle1">Page {1}</Typography>
           {/* //hotelQuery.pageNumber}</Typography> */}
         </Grid>
         <Grid item>
