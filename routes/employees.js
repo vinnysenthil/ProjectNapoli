@@ -94,7 +94,8 @@ router.get("/check/:full_name", (req, res, next) => {
 
   var authPack = {
     id: 0,
-    manager: false
+    manager: false,
+    fired: false
   };
 
   sequelize.Employees.findAll({
@@ -105,11 +106,12 @@ router.get("/check/:full_name", (req, res, next) => {
     include: {
       model: sequelize.DeptManager
     },
-    attributes: ["emp_no"]
+    attributes: ["emp_no", "fired"]
   })
     .then(emp => {
       authPack.id = emp[0].emp_no;
-
+      authPack.fired = emp[0].fired || false;
+    
       if (emp[0].dept_managers.length) {
         authPack.manager = true;
         return res.status(200).json(authPack);
