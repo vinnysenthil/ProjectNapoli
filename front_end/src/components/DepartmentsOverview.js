@@ -19,7 +19,6 @@ import Grid from "@material-ui/core/Grid";
 
 // Actions
 import { getCurrentEmployee } from "../actions/employeeActions";
-import { getDepartments } from "../actions/overviewActions";
 
 let id = 0;
 function createData(firstCol, secondCol) {
@@ -44,7 +43,6 @@ class DepartmentsOverview extends Component {
 
   async componentDidMount() {
     this.checkAuthentication();
-    // this.props.getDepartments();
     // this.props.getCurrentEmployee();
   }
 
@@ -110,7 +108,6 @@ class DepartmentsOverview extends Component {
 }
 
 DepartmentsOverview.PropTypes = {
-  getDepartments: PropTypes.func.isRequired,
   getCurrentEmployee: PropTypes.func.isRequired
 };
 
