@@ -8,7 +8,6 @@ import { checkAuthentication } from "../helpers";
 import SearchBar from "./SearchBar";
 import { submitQuery, saveQuery } from "../actions/searchActions";
 import { Link } from "react-router-dom";
-// import { withRouter } from "react-router-dom";
 import NapoliLogo from "./images/logo.png";
 import { withRouter } from "react-router-dom";
 

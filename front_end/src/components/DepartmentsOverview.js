@@ -16,9 +16,10 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
+import { withRouter } from "react-router-dom";
 
 // Actions
-import { getCurrentEmployee } from "../actions/employeeActions";
+import { getDepartments } from "../actions/overviewActions";
 
 let id = 0;
 function createData(firstCol, secondCol) {
@@ -39,11 +40,11 @@ class DepartmentsOverview extends Component {
     this.state = { authenticated: null, userinfo: null };
     this.checkAuthentication = checkAuthentication.bind(this);
     this.login = this.login.bind(this);
+    this.onclickDept = this.onclickDept.bind(this);
   }
 
   async componentDidMount() {
     this.checkAuthentication();
-    // this.props.getCurrentEmployee();
   }
 
   async componentDidUpdate() {
@@ -54,21 +55,27 @@ class DepartmentsOverview extends Component {
     this.props.auth.login("/");
   }
 
+  onclickDept(deptNumber) {
+    this.props.getDepartments(deptNumber);
+
+    this.props.history.push("/individualDepartment");
+  }
+
   render() {
     const { classes } = this.props;
 
     let DepartmentList;
 
     DepartmentList = [
-      createData("Marketing", "d001"),
-      createData("Finance", "d002"),
-      createData("Human Resources", "d003"),
-      createData("Production", "d004"),
-      createData("Development", "d005"),
-      createData("Quality Management", "d006"),
-      createData("Sales", "d007"),
-      createData("Research", "d008"),
-      createData("Customer Service", "d009")
+      createData("Marketing", "1"),
+      createData("Finance", "2"),
+      createData("Human Resources", "3"),
+      createData("Production", "4"),
+      createData("Development", "5"),
+      createData("Quality Management", "6"),
+      createData("Sales", "7"),
+      createData("Research", "8"),
+      createData("Customer Service", "9")
     ];
 
     return (
@@ -92,9 +99,9 @@ class DepartmentsOverview extends Component {
                               <Button
                                 id="login-button"
                                 secondary
-                                onClick={this.onclickFire}
+                                onClick={this.onclickDept}
                               >
-                                Fire Employee
+                                More Info
                               </Button>
                             </CardContent>
                           </Card>
@@ -123,4 +130,9 @@ const mapStateToProps = state => ({
   employee: state.employee
 });
 
-export default withStyles(styles)(withAuth(DepartmentsOverview));
+export default connect(
+  mapStateToProps,
+  { getDepartments }
+)(withStyles(styles)(withAuth(withRouter(DepartmentsOverview))));
+
+// withStyles(styles)(withAuth(DepartmentsOverview));
