@@ -41,6 +41,10 @@ class SomeEmployeeOverview extends Component {
 
     if (someEmployeeData && someEmployeeData.curr_salary)
       EmployeeDataRows = [
+        createData(
+          "Status:",
+          someEmployeeData.fired ? "Former Employee" : "Current Employee"
+        ),
         createData("Employee ID:", someEmployeeData.emp_no),
         createData("DOB:", someEmployeeData.birth_date),
         createData("Firstname:", someEmployeeData.first_name),
@@ -64,7 +68,9 @@ class SomeEmployeeOverview extends Component {
           <div>
             {this.state.authenticated && (
               <div>
-                {employeeCheck && employeeCheck.manager ? (
+                {employeeCheck &&
+                employeeCheck.manager &&
+                !someEmployeeData.fired ? (
                   <Link to="/employeeHistory">
                     <Button id="login-button" secondary>
                       Fire Employee
