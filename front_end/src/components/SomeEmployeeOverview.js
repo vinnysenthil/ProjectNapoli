@@ -11,9 +11,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import TableBody from "@material-ui/core/TableBody";
 
-// Actions
-import { getCurrentEmployee } from "../actions/employeeActions";
-import { getDepartments } from "../actions/overviewActions";
+/// ACTION FOR FIRING EMPLOYEE
 
 let id = 0;
 function createData(firstCol, secondCol) {
@@ -21,52 +19,43 @@ function createData(firstCol, secondCol) {
   return { id, firstCol, secondCol };
 }
 
-class Home extends Component {
+class SomeEmployeeOverview extends Component {
   constructor(props) {
     super(props);
     this.state = { authenticated: null, userinfo: null };
     this.checkAuthentication = checkAuthentication.bind(this);
-    this.login = this.login.bind(this);
   }
 
   async componentDidMount() {
     this.checkAuthentication();
-    this.props.getDepartments();
   }
 
   async componentDidUpdate() {
     this.checkAuthentication();
-
-    if (this.props.employee.employeeCheck)
-      this.props.getCurrentEmployee(this.props.employee.employeeCheck.id);
-  }
-
-  async login() {
-    this.props.auth.login("/");
   }
 
   render() {
-    const { employeeData } = this.props.employee;
+    const { someEmployeeData } = this.props.employee;
 
     let EmployeeDataRows = [];
 
-    if (employeeData.curr_salary)
+    if (someEmployeeData && someEmployeeData.curr_salary)
       EmployeeDataRows = [
-        createData("Employee ID:", employeeData.emp_no),
-        createData("DOB:", employeeData.birth_date),
-        createData("Firstname:", employeeData.first_name),
-        createData("Lastname:", employeeData.last_name),
-        createData("Gender:", employeeData.gender),
-        createData("Hire Date:", employeeData.hire_date),
+        createData("Employee ID:", someEmployeeData.emp_no),
+        createData("DOB:", someEmployeeData.birth_date),
+        createData("Firstname:", someEmployeeData.first_name),
+        createData("Lastname:", someEmployeeData.last_name),
+        createData("Gender:", someEmployeeData.gender),
+        createData("Hire Date:", someEmployeeData.hire_date),
         createData(
           "Salary:",
           "$ " +
-            employeeData.curr_salary
+            someEmployeeData.curr_salary
               .toFixed(2)
               .replace(/\d(?=(\d{3})+\.)/g, "$&,")
         ),
-        createData("Department:", employeeData.curr_dept),
-        createData("Title:", employeeData.curr_title)
+        createData("Department:", someEmployeeData.curr_dept),
+        createData("Title:", someEmployeeData.curr_title)
       ];
 
     return (
@@ -75,11 +64,9 @@ class Home extends Component {
           <div>
             {this.state.authenticated && (
               <div>
-                <Header as="h1">Project Napoli Employee Dashboard</Header>
-                <p>Welcome back, {this.state.userinfo.name}!</p>
                 <Link to="/employeeHistory">
-                  <Button id="login-button" primary>
-                    My History
+                  <Button id="login-button" secondary>
+                    Fire Employee
                   </Button>
                 </Link>
                 <br /> <br />
@@ -122,17 +109,6 @@ class Home extends Component {
                 <br />
               </div>
             )}
-            {!this.state.authenticated && (
-              <div>
-                <Header as="h1">Welcome to Project Napoli</Header>
-
-                <p>Please log in to access your Employee Dashboard.</p>
-
-                <Button id="login-button" primary onClick={this.login}>
-                  Login
-                </Button>
-              </div>
-            )}
           </div>
         )}
       </div>
@@ -140,10 +116,9 @@ class Home extends Component {
   }
 }
 
-Home.PropTypes = {
-  getDepartments: PropTypes.func.isRequired,
-  getCurrentEmployee: PropTypes.func.isRequired
-  // checkCurrentEmployee: PropTypes.func.isRequired
+SomeEmployeeOverview.PropTypes = {
+  //   getDepartments: PropTypes.func.isRequired,
+  //   getCurrentEmployee: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -151,7 +126,4 @@ const mapStateToProps = state => ({
   employee: state.employee
 });
 
-export default connect(
-  mapStateToProps,
-  { getDepartments, getCurrentEmployee }
-)(withAuth(Home));
+export default connect(mapStateToProps)(withAuth(SomeEmployeeOverview));
