@@ -45,8 +45,6 @@ class Navbar extends Component {
   async componentDidUpdate() {
     this.checkAuthentication();
 
-    console.log("authenticated: " + this.state.authenticated);
-
     if (this.state.authenticated && this.state.userinfo && !checkedIn) {
       await this.props.checkCurrentEmployee(this.state.userinfo.name);
 
