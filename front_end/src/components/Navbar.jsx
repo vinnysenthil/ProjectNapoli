@@ -1,19 +1,26 @@
 import { withAuth } from "@okta/okta-react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import React, { Component } from "react";
 import { Container, Icon, Image, Menu } from "semantic-ui-react";
 import { checkAuthentication } from "../helpers";
 import SearchBar from "./SearchBar";
-import { submitQuery } from "../actions/searchActions";
+import { submitQuery, saveQuery } from "../actions/searchActions";
 import { Link } from "react-router-dom";
 // import { withRouter } from "react-router-dom";
 import NapoliLogo from "./images/logo.png";
+import { withRouter } from "react-router-dom";
 
 import "./navbar.css";
 
 // Material-UI Imports Below
 import { Button, Grid } from "@material-ui/core";
+
+// Actions
+import { checkCurrentEmployee } from "../actions/employeeActions";
+
+var checkedIn = false;
 
 class Navbar extends Component {
   constructor(props) {
@@ -25,8 +32,11 @@ class Navbar extends Component {
     this.checkAuthentication = checkAuthentication.bind(this);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
-    this.onSearchClick = this.onSearchClick.bind(this);
+    // this.onSearchClick = this.onSearchClick.bind(this);
+    this.onHandleSearchQuery = this.onHandleSearchQuery.bind(this);
   }
+
+  async componentWillMount() {}
 
   async componentDidMount() {
     this.checkAuthentication();
@@ -34,6 +44,12 @@ class Navbar extends Component {
 
   async componentDidUpdate() {
     this.checkAuthentication();
+
+    if (this.state.authenticated && this.state.userinfo && !checkedIn) {
+      await this.props.checkCurrentEmployee(this.state.userinfo.name);
+
+      checkedIn = true;
+    }
   }
 
   async login() {
@@ -44,12 +60,29 @@ class Navbar extends Component {
     this.props.auth.logout("/");
   }
 
-  onSearchClick() {
-    //NOTE: we assume user will search for name
-    // submit query as object with to submitQuery at queryActions.js
+  // onSearchClick() {
+  //   //NOTE: we assume user will search for name
+  //   // submit query as object with to submitQuery at searchActions.js
 
-    // this.props.submitQuery(this.state.searchQuery);
-    this.props.submitQuery("TEST");
+  //   let newQuery = {
+  //     query: this.state.searchQuery
+  //     // dept: 5
+  //   };
+  //   console.log("step1");
+  //   this.props.submitQuery(newQuery);
+  // }
+
+  onHandleSearchQuery(newQueryString) {
+    console.log("new name: " + newQueryString);
+
+    let newQuery = {
+      query: newQueryString
+      // dept: 5
+    };
+    this.props.submitQuery(newQuery);
+    this.props.saveQuery(newQueryString);
+    // this.setState({ searchQuery: newQueryString });
+    this.props.history.push("/searchresult");
   }
 
   render() {
@@ -59,6 +92,7 @@ class Navbar extends Component {
         spacing={0}
         justify="space-around"
         alignItems="center"
+        md={4}
         lg={4}
       >
         <Grid item className="headerMenu">
@@ -99,13 +133,19 @@ class Navbar extends Component {
     );
 
     let authorizedMarkUp = (
-      <Grid container spacing={0} justify="center" alignItems="center" lg={5}>
-        <SearchBar searchQuery={this.state.searchQuery} />
-        <Grid className=" buttonSearch" item>
-          <Button className=" buttonSearch" onClick={this.onSearchClick}>
-            SEARCH
-          </Button>{" "}
-        </Grid>
+      <Grid
+        container
+        spacing={0}
+        justify="center"
+        alignItems="center"
+        md={6}
+        lg={6}
+      >
+        <SearchBar
+          onHandleSearchQuery={this.onHandleSearchQuery}
+          searchQuery={this.state.searchQuery}
+        />
+        {/* <Grid className=" buttonSearch" item /> */}
       </Grid>
     );
 
@@ -141,72 +181,31 @@ class Navbar extends Component {
               </Grid>
             </Link>
           </Grid>
-          {1 === 1 ? authorizedMarkUp : null}
+          {this.props.employee.employeeCheck &&
+          this.props.employee.employeeCheck.manager === true
+            ? authorizedMarkUp
+            : null}
 
           {this.state.authenticated === true ? loggedInMarkup : guestMarkUp}
-
-          {/* {this.props.landing.isInLanding == true
-            ? inLandingMarkup
-            : notInLandingMarkup}
-          {this.props.auth.isAuthenticated ? loggedInMarkup : guestMarkUp} */}
         </Grid>
       </div>
-
-      // <div>
-      //   suff
-      //   <Menu fixed="top" inverted>
-      //     <Container>
-      //       {" "}
-      //       <Link to="/employeeHistory">suffasdf</Link>
-      //       <Menu.Item as="a" header href="/">
-      //         <Image size="mini" src="/logo.png" />
-      //         &nbsp; Project Napoli
-      //       </Menu.Item>
-      //       {this.state.authenticated === true && (
-      //         <Link to="/departments">
-      //           {/* <Menu.Item id="messages-button" as="a"> */}
-      //           Departments
-      //           {/* </Menu.Item> */}
-      //         </Link>
-      //       )}
-      //       {this.state.authenticated === true && (
-      //         <Menu.Item id="profile-button" as="a" href="/profile">
-      //           Profile
-      //         </Menu.Item>
-      //       )}
-      //       {this.state.authenticated === true && (
-      //         <Menu.Item id="logout-button" as="a" onClick={this.logout}>
-      //           Logout
-      //         </Menu.Item>
-      //       )}
-      //       {this.state.authenticated === false && (
-      //         <Menu.Item as="a" onClick={this.login}>
-      //           Login
-      //         </Menu.Item>
-      //       )}
-      //       {this.state.authenticated === true && (
-      //         <SearchBar searchQuery={this.state.searchQuery} />
-      //       )}
-      //       {this.state.authenticated === true && (
-      //         <Menu.Item id="logout-button" as="a" onClick={this.onSearchClick}>
-      //           SEARCH
-      //         </Menu.Item>
-      //       )}
-      //     </Container>
-      //   </Menu>
-      // </div>
     );
   }
 }
 
+Navbar.PropTypes = {
+  getDepartments: PropTypes.func.isRequired,
+  getCurrentEmployee: PropTypes.func.isRequired,
+  checkCurrentEmployee: PropTypes.func.isRequired
+};
+
 const mapStateToProps = state => ({
-  // upload: state.upload
+  employee: state.employee
 });
 
-export default withAuth(Navbar);
-// mapStateToProps,
-// { submitQuery }
+export default connect(
+  mapStateToProps,
+  { checkCurrentEmployee, submitQuery, saveQuery }
+)(withAuth(withRouter(Navbar)));
 
-// export default connect({ submitQuery })(withAuth()(withRouter(Navbar)));
-
-// export default withAuth(
+// )(withStyles(styles)(withRouter(SearchWidget)));

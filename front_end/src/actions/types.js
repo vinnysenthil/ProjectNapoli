@@ -1,6 +1,6 @@
 // SEARCH WIDGET
 export const SUBMIT_QUERY = "SUBMIT_QUERY";
-// export const SAVE_QUERY = "SAVE_QUERY";
+export const SAVE_QUERY = "SAVE_QUERY";
 // export const SEARCH_LOADING = "SEARCH_LOADING";
 
 // SEARCH RESULT TYPES
@@ -13,3 +13,5 @@ export const GET_DEPT = "GET_DEPT";
 
 // EMPLOYEE TYPES
 export const GET_EMPLOYEE = "GET_EMPLOYEE";
+export const CHECK_EMPLOYEE = "CHECK_EMPLOYEE";
+export const GET_SOME_EMPLOYEE = "GET_SOME_EMPLOYEE";

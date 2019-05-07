@@ -13,7 +13,6 @@ import TableBody from "@material-ui/core/TableBody";
 
 // Actions
 import { getCurrentEmployee } from "../actions/employeeActions";
-import { getDepartments } from "../actions/overviewActions";
 
 class EmployeeHistory extends Component {
   constructor(props) {
@@ -25,8 +24,8 @@ class EmployeeHistory extends Component {
 
   async componentDidMount() {
     this.checkAuthentication();
-    this.props.getDepartments();
-    // this.props.getCurrentEmployee();
+    if (this.props.employee.employeeCheck)
+      this.props.getCurrentEmployee(this.props.employee.employeeCheck.id);
   }
 
   async componentDidUpdate() {
@@ -63,7 +62,7 @@ class EmployeeHistory extends Component {
               {row.from_date}
             </TableCell>
             <TableCell align="left" style={{ padding: 0 }}>
-              {row.to_date}
+              {row.to_date ? row.to_date : "current"}
             </TableCell>
             <TableCell align="left" style={{ padding: 0 }}>
               $ {row.salary.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}
@@ -91,7 +90,7 @@ class EmployeeHistory extends Component {
               {row.from_date}
             </TableCell>
             <TableCell align="left" style={{ padding: 0 }}>
-              {row.to_date}
+              {row.to_date ? row.to_date : "current"}
             </TableCell>
             <TableCell align="left" style={{ padding: 0 }}>
               {row.title}
@@ -201,7 +200,6 @@ class EmployeeHistory extends Component {
 }
 
 EmployeeHistory.PropTypes = {
-  getDepartments: PropTypes.func.isRequired,
   getCurrentEmployee: PropTypes.func.isRequired
 };
 
@@ -212,5 +210,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getDepartments, getCurrentEmployee }
+  { getCurrentEmployee }
 )(withAuth(EmployeeHistory));
