@@ -38,6 +38,7 @@ class SomeEmployeeOverview extends Component {
 
   onclickFire() {
     this.props.fireEmployee(this.props.employee.someEmployeeData.emp_no);
+    this.props.history.push("/employeeOverview");
   }
 
   render() {

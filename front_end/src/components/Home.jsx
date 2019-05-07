@@ -126,7 +126,12 @@ class Home extends Component {
                 <br />
               </div>
             ) : (
-              <div>YOUR CONTRACT HAS BEEN TERMINATED</div>
+              <div>
+                {this.state.authenticated &&
+                this.props.employee.employeeCheck ? (
+                  <div>YOUR CONTRACT HAS BEEN TERMINATED</div>
+                ) : null}
+              </div>
             )}
 
             {!this.state.authenticated && (
