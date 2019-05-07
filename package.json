@@ -23,6 +23,7 @@
     "@okta/jwt-verifier": "0.0.14",
     "@okta/okta-auth-js": "^2.5.0",
     "@okta/okta-react": "^1.2.0",
+    "@okta/okta-sdk-nodejs": "^2.0.0",
     "autosuggest-highlight": "^3.1.1",
     "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
@@ -57,6 +58,7 @@
     "redux-thunk": "^2.3.0",
     "semantic-ui-react": "^0.86.0",
     "sequelize": "^5.7.6",
+    "twitter": "^1.7.1",
     "validator": "^10.9.0",
     "winston": "^3.1.0"
   },

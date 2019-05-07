@@ -1,12 +1,94 @@
-var express = require('express');
+const RuntimeVars = require('../services/RuntimeVars');
 const sequelize = require('../services/sequelize');
+const okta = require('@okta/okta-sdk-nodejs');
 const Sequelize = require('sequelize');
+var Twitter = require('twitter');
+var express = require('express');
 var router = express.Router();
 
+// POST /api/fire/:emp_no
+router.post('/fire/:emp_no', (req, res, next) => {
+
+    const firedEmp = req.params.emp_no;
+    console.log
+    sequelize.Employees.findByPk(firedEmp, {
+        include: 
+        [{
+            model: sequelize.Titles,
+            where: { emp_no: Sequelize.col('employees.emp_no') },
+            attributes: ['title', 'from_date', 'to_date']
+        }],
+        attributes: ['emp_no', 'first_name', 'last_name', 'hire_date']
+    }).then((emp) => {
+
+        // Number of Years Employee Worked
+        const numYears = 2019 - parseInt(emp.hire_date.split('-')[0])
+
+        const client = new okta.Client({
+            orgUrl: RuntimeVars.OKTA.ORG,
+            token: RuntimeVars.OKTA.TOKEN
+          });
+
+        // Grab Okta user
+        client.getUser(`${ (emp.first_name + emp.last_name).toLowerCase() }@napoli.com`)
+        .then(async user => {
+
+            var twitterClient = new Twitter({
+                consumer_key: RuntimeVars.TWITTER.CONSUMER_KEY,
+                consumer_secret: RuntimeVars.TWITTER.CONSUMER_SECRET,
+                access_token_key: RuntimeVars.TWITTER.ACCESS_TOKEN_KEY,
+                access_token_secret: RuntimeVars.TWITTER.ACCESS_TOKEN_SECRET
+              });
+            
+            // Deactivate and delete the user
+            user.deactivate()
+            .then(() => console.log('User has been deactivated'))
+            .then(() => user.delete())
+            .then(() => {
+
+                // Update DB status to fired
+                emp.update({
+                    fired: true
+                }).then(async (doc) => {
+
+                    async function tweetFiring() {
+                        twitterClient.post('statuses/update', 
+                            {status: `${emp.first_name} ${emp.last_name} just got fired after ${numYears} years on the job. Everyone say goodbye!`},  
+                            function(error, tweet, response) {
+                                if(error) console.log(error)
+                                
+                            }
+                        );
+                    }
+
+                    await tweetFiring()
+
+                    return res.status(200).json({
+                        unemployed: doc
+                    })
+                }).catch((err) => {
+                    
+                    return res.status(404).send("Unable to set fired status to Employee");
+                })
+            });
+
+        }).catch((oktaErr) => {
+
+            return res.status(404).json(oktaErr);
+
+        });
+
+    }).catch((err) => {
+        console.log(err)
+        return res.status(404).send("Sequelize for Employee to fire failed")
+
+    });
+ 
+});
+
+
 // GET /api/employees/check/:full_name
-
 // Pass full_name to see if Employee is a manager or not
-
 router.get('/check/:full_name', (req, res, next) => {
     const fullName = req.params.full_name
 
@@ -200,7 +282,8 @@ router.get('/:emp_no', async function(req, res, next) {
                 curr_dept: currentDepartment,
                 curr_dept_id: currentDepartmentId,
                 salaries: salaryCopy,
-                titles: titlesCopy
+                titles: titlesCopy,
+                fired: empInfo.fired || false
     
             }
     
