@@ -16,7 +16,6 @@ import Chart from "./Graph";
 
 // Actions
 import { getCurrentEmployee } from "../actions/employeeActions";
-import { getDepartments } from "../actions/overviewActions";
 
 class DepartmentOverview extends Component {
   constructor(props) {
@@ -28,7 +27,6 @@ class DepartmentOverview extends Component {
 
   async componentDidMount() {
     this.checkAuthentication();
-    this.props.getDepartments();
     // this.props.getCurrentEmployee();
   }
 
@@ -86,7 +84,6 @@ class DepartmentOverview extends Component {
 }
 
 DepartmentOverview.PropTypes = {
-  getDepartments: PropTypes.func.isRequired,
   getCurrentEmployee: PropTypes.func.isRequired
 };
 
@@ -97,5 +94,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getDepartments, getCurrentEmployee }
+  { getCurrentEmployee }
 )(withAuth(DepartmentOverview));

@@ -15,3 +15,4 @@ export const GET_DEPT = "GET_DEPT";
 export const GET_EMPLOYEE = "GET_EMPLOYEE";
 export const CHECK_EMPLOYEE = "CHECK_EMPLOYEE";
 export const GET_SOME_EMPLOYEE = "GET_SOME_EMPLOYEE";
+export const FIRE_EMPLOYEE = "FIRE_EMPLOYEE";
