@@ -52,6 +52,10 @@ class Home extends Component {
 
     if (employeeData.curr_salary)
       EmployeeDataRows = [
+        createData(
+          "Status:",
+          employeeData.fired ? "Former Employee" : "Current Employee"
+        ),
         createData("Employee ID:", employeeData.emp_no),
         createData("DOB:", employeeData.birth_date),
         createData("Firstname:", employeeData.first_name),
