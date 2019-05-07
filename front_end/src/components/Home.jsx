@@ -13,7 +13,6 @@ import TableBody from "@material-ui/core/TableBody";
 
 // Actions
 import { getCurrentEmployee } from "../actions/employeeActions";
-import { getDepartments } from "../actions/overviewActions";
 
 let id = 0;
 function createData(firstCol, secondCol) {
@@ -31,7 +30,6 @@ class Home extends Component {
 
   async componentDidMount() {
     this.checkAuthentication();
-    this.props.getDepartments();
   }
 
   async componentDidUpdate() {
@@ -145,7 +143,6 @@ class Home extends Component {
 }
 
 Home.PropTypes = {
-  getDepartments: PropTypes.func.isRequired,
   getCurrentEmployee: PropTypes.func.isRequired
   // checkCurrentEmployee: PropTypes.func.isRequired
 };
@@ -157,5 +154,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getDepartments, getCurrentEmployee }
+  { getCurrentEmployee }
 )(withAuth(Home));

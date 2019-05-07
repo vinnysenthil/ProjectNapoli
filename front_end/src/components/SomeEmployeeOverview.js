@@ -1,6 +1,7 @@
 import { Button, Header } from "semantic-ui-react";
 import { checkAuthentication } from "../helpers";
 import PropTypes from "prop-types";
+import { fireEmployee } from "../actions/employeeActions";
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -24,6 +25,7 @@ class SomeEmployeeOverview extends Component {
     super(props);
     this.state = { authenticated: null, userinfo: null };
     this.checkAuthentication = checkAuthentication.bind(this);
+    this.onclickFire = this.onclickFire.bind(this);
   }
 
   async componentDidMount() {
@@ -32,6 +34,10 @@ class SomeEmployeeOverview extends Component {
 
   async componentDidUpdate() {
     this.checkAuthentication();
+  }
+
+  onclickFire() {
+    this.props.fireEmployee(this.props.employee.someEmployeeData.emp_no);
   }
 
   render() {
@@ -71,11 +77,13 @@ class SomeEmployeeOverview extends Component {
                 {employeeCheck &&
                 employeeCheck.manager &&
                 !someEmployeeData.fired ? (
-                  <Link to="/employeeHistory">
-                    <Button id="login-button" secondary>
-                      Fire Employee
-                    </Button>
-                  </Link>
+                  <Button
+                    id="login-button"
+                    secondary
+                    onClick={this.onclickFire}
+                  >
+                    Fire Employee
+                  </Button>
                 ) : null}
                 <br /> <br />
                 <div
@@ -125,7 +133,6 @@ class SomeEmployeeOverview extends Component {
 }
 
 SomeEmployeeOverview.PropTypes = {
-  //   getDepartments: PropTypes.func.isRequired,
   //   getCurrentEmployee: PropTypes.func.isRequired
 };
 
@@ -134,4 +141,7 @@ const mapStateToProps = state => ({
   employee: state.employee
 });
 
-export default connect(mapStateToProps)(withAuth(SomeEmployeeOverview));
+export default connect(
+  mapStateToProps,
+  { fireEmployee }
+)(withAuth(SomeEmployeeOverview));

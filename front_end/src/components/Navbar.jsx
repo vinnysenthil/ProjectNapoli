@@ -194,7 +194,6 @@ class Navbar extends Component {
 }
 
 Navbar.PropTypes = {
-  getDepartments: PropTypes.func.isRequired,
   getCurrentEmployee: PropTypes.func.isRequired,
   checkCurrentEmployee: PropTypes.func.isRequired
 };
