@@ -4,7 +4,7 @@
 
 .navbarLogo {
   position: relative;
-  left: 7%;
+  left: 4%;
 }
 
 img.abode-logo {
@@ -39,7 +39,7 @@ img.abode-logo {
   color: black;
   width: 98px;
   position: relative;
-  border: none;
+  border: 1px;
   margin: 3px 2px;
   cursor: pointer;
   font-size: 17px;
@@ -80,6 +80,5 @@ img.abode-logo {
 .navbarContainer {
   height: 102px;
   overflow-x: hidden;
-  background-color: black; /* For browsers that do not support gradients */
-  /* background-image: linear-gradient(to right, #0c4b78, #3d4e96, #2c76a9); */
+  background-color: black;
 }

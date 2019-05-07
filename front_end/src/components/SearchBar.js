@@ -3,6 +3,8 @@ import InputBase from "@material-ui/core/InputBase";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import { withStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
+import { Button, Grid } from "@material-ui/core";
+import "./navbar.css";
 
 const styles = theme => ({
   search: {
@@ -46,32 +48,49 @@ const styles = theme => ({
 class SearchBar extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      name: "",
 
-    // this.handleChange = this.handleChange.bind(this);
+      input: ""
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.onSearchClick = this.onSearchClick.bind(this);
   }
 
-  // handleChange = (event, { newValue }) => {
-  //   this.props.onHandleDestinationName(newValue);
-  // };
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.value });
+  };
+
+  onSearchClick() {
+    this.props.onHandleSearchQuery(this.state.name);
+  }
 
   render() {
     const { classes } = this.props;
 
     return (
-      <div className={classes.search}>
-        <div className={classes.searchIcon}>
-          <SearchIcon />
-        </div>
-        <InputBase
-          placeholder="Search for Employee or Department"
-          value={this.props.destinationName}
-          // onChange={this.handleChange()}
-          classes={{
-            root: classes.inputRoot,
-            input: classes.inputInput
-          }}
-        />
-      </div>
+      <Grid container spacing={0} justify="center" alignItems="center">
+        <Grid item className={classes.search}>
+          <div className={classes.searchIcon}>
+            <SearchIcon />
+          </div>
+          <InputBase
+            placeholder="Search for Firstname, Lastname or Employee ID"
+            value={this.state.name}
+            onChange={this.handleChange("name")}
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput
+            }}
+          />
+        </Grid>
+        <Grid item className="buttonSearch">
+          <Button className="buttonSearch" onClick={this.onSearchClick}>
+            SEARCH
+          </Button>
+        </Grid>
+      </Grid>
     );
   }
 }

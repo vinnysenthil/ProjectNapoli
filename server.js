@@ -9,7 +9,7 @@ var mainRouter = require('./routes/index');
 
 const app = express();
 app.use(cors());
-app.use(auth);
+// app.use(auth);
 
 
 // Enable CORS Globally

@@ -4,7 +4,7 @@ import { GET_DEPT } from "./types";
 
 export const getDepartments = () => dispatch => {
   axios
-    .get("localhost:172/api/depts")
+    .get("http://localhost:172/api/depts")
     .then(
       res =>
         console.log(res.data) +

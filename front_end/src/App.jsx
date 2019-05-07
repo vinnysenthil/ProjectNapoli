@@ -13,6 +13,8 @@ import Profile from "./components/Profile";
 import EmployeeHistory from "./components/EmployeeHistory";
 import DepartmentsOverview from "./components/DepartmentsOverview";
 import IndividualDepartment from "./components/IndividualDepartment";
+import SearchResults from "./components/SearchResults";
+import SomeEmployeeOverview from "./components/SomeEmployeeOverview";
 
 class App extends Component {
   render() {
@@ -29,8 +31,21 @@ class App extends Component {
               <Switch>
                 <Container text style={{ marginTop: "3em" }}>
                   <Route exact path="/" component={Home} />
+                  <SecureRoute
+                    exact
+                    path="/searchresult"
+                    component={SearchResults}
+                  />
+
                   <SecureRoute exact path="/messages" component={Messages} />
                   <SecureRoute exact path="/profile" component={Profile} />
+
+                  <SecureRoute
+                    exact
+                    path="/employeeOverview"
+                    component={SomeEmployeeOverview}
+                  />
+
                   <SecureRoute
                     exact
                     path="/employeeHistory"
