@@ -41,12 +41,16 @@ class SomeEmployeeOverview extends Component {
   }
 
   render() {
-    const { someEmployeeData } = this.props.employee;
+    const { someEmployeeData, employeeCheck } = this.props.employee;
 
     let EmployeeDataRows = [];
 
     if (someEmployeeData && someEmployeeData.curr_salary)
       EmployeeDataRows = [
+        createData(
+          "Status:",
+          someEmployeeData.fired ? "Former Employee" : "Current Employee"
+        ),
         createData("Employee ID:", someEmployeeData.emp_no),
         createData("DOB:", someEmployeeData.birth_date),
         createData("Firstname:", someEmployeeData.first_name),
@@ -70,9 +74,17 @@ class SomeEmployeeOverview extends Component {
           <div>
             {this.state.authenticated && (
               <div>
-                <Button id="login-button" secondary onClick={this.onclickFire}>
-                  Fire Employee
-                </Button>
+                {employeeCheck &&
+                employeeCheck.manager &&
+                !someEmployeeData.fired ? (
+                  <Button
+                    id="login-button"
+                    secondary
+                    onClick={this.onclickFire}
+                  >
+                    Fire Employee
+                  </Button>
+                ) : null}
                 <br /> <br />
                 <div
                   style={{
