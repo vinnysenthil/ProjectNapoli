@@ -75,15 +75,11 @@ class Navbar extends Component {
   // }
 
   onHandleSearchQuery(newQueryString) {
-    console.log("new name: " + newQueryString);
-
     let newQuery = {
       query: newQueryString
-      // dept: 5
     };
     this.props.submitQuery(newQuery);
     this.props.saveQuery(newQueryString);
-    // this.setState({ searchQuery: newQueryString });
     this.props.history.push("/searchresult");
   }
 
@@ -97,16 +93,22 @@ class Navbar extends Component {
         md={4}
         lg={4}
       >
-        <Grid item className="headerMenu">
-          <Link to="/departmentOverview" style={{ color: "white" }}>
-            Departments
-          </Link>
-        </Grid>
-        <Grid item className="headerMenu">
-          <Link to="/employeeHistory" style={{ color: "white" }}>
-            My History
-          </Link>
-        </Grid>
+        {this.props.employee.employeeCheck &&
+        this.props.employee.employeeCheck.fired === false ? (
+          <Grid item className="headerMenu">
+            <Link to="/departmentOverview" style={{ color: "white" }}>
+              Departments
+            </Link>
+          </Grid>
+        ) : null}
+        {this.props.employee.employeeCheck &&
+        this.props.employee.employeeCheck.fired === false ? (
+          <Grid item className="headerMenu">
+            <Link to="/employeeHistory" style={{ color: "white" }}>
+              My History
+            </Link>
+          </Grid>
+        ) : null}
         <Grid className="navButtons buttonBlue" item>
           <Button className="navButtons buttonBlue" onClick={this.logout}>
             Logout
@@ -184,7 +186,8 @@ class Navbar extends Component {
             </Link>
           </Grid>
           {this.props.employee.employeeCheck &&
-          this.props.employee.employeeCheck.manager === true
+          this.props.employee.employeeCheck.manager === true &&
+          this.props.employee.employeeCheck.fired === false
             ? authorizedMarkUp
             : null}
 
