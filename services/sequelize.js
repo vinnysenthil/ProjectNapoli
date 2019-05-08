@@ -47,8 +47,11 @@ Salaries.belongsTo(Employees, {foreignKey: 'emp_no', targetKey: 'emp_no'});
 Employees.hasMany(DeptEmployee, {foreignKey: 'emp_no', sourceKey: 'emp_no'});
 DeptEmployee.belongsTo(Employees, {foreignKey: 'emp_no', targetKey: 'emp_no'});
 
-Employees.hasMany(DeptManager, {foreignKey: 'emp_no', sourceKey: 'emp_no'});
-DeptManager.belongsTo(Employees, {foreignKey: 'emp_no', targetKey: 'emp_no'});
+Employees.hasMany(DeptEmployee, {foreignKey: 'emp_no', sourceKey: 'emp_no'});
+DeptEmployee.belongsTo(Employees, {foreignKey: 'emp_no', targetKey: 'emp_no'});
+
+Salaries.hasMany(DeptEmployee, {foreignKey: 'emp_no', sourceKey: 'emp_no'});
+DeptEmployee.belongsTo(Salaries, {foreignKey: 'emp_no', targetKey: 'emp_no'});
 
 DeptEmployee.hasOne(Departments, {foreignKey: 'dept_no', sourceKey: 'dept_no'});
 Departments.belongsTo(DeptEmployee, {foreignKey: 'dept_no', targetKey: 'dept_no'});
