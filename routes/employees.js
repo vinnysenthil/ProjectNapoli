@@ -217,7 +217,9 @@ router.get("/search", (req, res, next) => {
       return res.status(200).json({
         finalResults,
         isThereMore,
-        page
+        page,
+        dept,
+        query
       });
 
     })
