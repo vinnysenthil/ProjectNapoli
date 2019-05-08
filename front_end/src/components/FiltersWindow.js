@@ -54,9 +54,6 @@ class FiltersWindow extends Component {
 
   handleChange = event => {
     this.setState({ departmentChosen: event.target.value });
-
-    console.log("target value:" + event.target.value);
-    // this.setState({ departmentChosen: 3 });
   };
 
   // let departmentChosen = null;
@@ -77,7 +74,6 @@ class FiltersWindow extends Component {
       handleFiltersApply
     } = this.props;
 
-    console.log("dept chosen:" + this.state.departmentChosen);
     return (
       <Grid
         item

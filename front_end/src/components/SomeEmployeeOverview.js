@@ -1,7 +1,7 @@
 import { Button, Header } from "semantic-ui-react";
 import { checkAuthentication } from "../helpers";
 import PropTypes from "prop-types";
-import { fireEmployee } from "../actions/employeeActions";
+import { fireEmployee, getSomeEmployee } from "../actions/employeeActions";
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -38,7 +38,8 @@ class SomeEmployeeOverview extends Component {
 
   onclickFire() {
     this.props.fireEmployee(this.props.employee.someEmployeeData.emp_no);
-    this.props.history.push("/employeeOverview");
+
+    this.props.history.push("/");
   }
 
   render() {
@@ -77,6 +78,7 @@ class SomeEmployeeOverview extends Component {
               <div>
                 {employeeCheck &&
                 employeeCheck.manager &&
+                someEmployeeData &&
                 !someEmployeeData.fired ? (
                   <Button
                     id="login-button"
@@ -144,5 +146,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fireEmployee }
+  { fireEmployee, getSomeEmployee }
 )(withAuth(SomeEmployeeOverview));

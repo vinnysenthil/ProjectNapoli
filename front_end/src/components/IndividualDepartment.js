@@ -15,7 +15,6 @@ import TableBody from "@material-ui/core/TableBody";
 import Chart from "./Graph";
 
 // Actions
-import { getCurrentEmployee } from "../actions/employeeActions";
 
 class DepartmentOverview extends Component {
   constructor(props) {
@@ -27,7 +26,6 @@ class DepartmentOverview extends Component {
 
   async componentDidMount() {
     this.checkAuthentication();
-    // this.props.getCurrentEmployee();
   }
 
   async componentDidUpdate() {
@@ -94,5 +92,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getCurrentEmployee }
+  {}
 )(withAuth(DepartmentOverview));

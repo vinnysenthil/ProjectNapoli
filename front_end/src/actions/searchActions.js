@@ -3,8 +3,6 @@ import axios from "axios";
 
 // do get request at routes/product.js with newQuery object
 export const submitQuery = newQuery => dispatch => {
-  console.log("in action: " + newQuery.dept + " and " + newQuery.query);
-
   let deptSearch = newQuery.dept ? "&dept=" + newQuery.dept : "";
 
   axios
