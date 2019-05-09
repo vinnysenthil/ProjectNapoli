@@ -59,8 +59,11 @@ class Navbar extends Component {
 
   onHandleSearchQuery(newQueryString) {
     let newQuery = {
-      query: newQueryString
+      query: newQueryString,
+      page: 0,
+      dept: this.props.query.searchQuery ? this.props.query.searchQuery.dept : null
     };
+
     this.props.submitQuery(newQuery);
     this.props.saveQuery(newQueryString);
     this.props.history.push("/searchresult");
@@ -186,7 +189,9 @@ Navbar.PropTypes = {
 };
 
 const mapStateToProps = state => ({
-  employee: state.employee
+  employee: state.employee,
+  query: state.query
+
 });
 
 export default connect(
