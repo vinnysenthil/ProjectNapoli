@@ -37,40 +37,62 @@ class DepartmentOverview extends Component {
   }
 
   render() {
+    let { departments } = this.props.overview;
+
     return (
       <div>
         {this.state.authenticated !== null && (
           <div>
             {this.state.authenticated && (
               <div>
+                <Header as="h2">{departments.deptName}</Header>
+                <br />
+                Total employees: {departments.totalEmployees} <br /> <br />{" "}
+                <br />
                 <Chart
-                  title="Gender Equality Chart"
+                  title="Share of total company expenses in %"
+                  type="percentage"
+                  data={{
+                    labels: [departments.deptName, "Other Departments"],
+                    datasets: [
+                      {
+                        values: [
+                          departments.shareOfCompanyCost,
+                          1 - departments.shareOfCompanyCost
+                        ]
+                      }
+                    ]
+                  }}
+                />
+                Share of total company expenses:{" "}
+                {departments.shareOfCompanyCost}
+                <br />
+                <Chart
+                  title="Gender Equality Chart in %"
                   type="percentage"
                   data={{
                     labels: ["Male", "Female"],
                     datasets: [
                       {
-                        // title: "Some Data",
-                        // color: "light-blue",
-                        values: [60, 40]
+                        values: [departments.male, departments.female]
                       }
                     ]
                   }}
                 />
                 <Chart
-                  title="Gender Pay Equality Chart"
+                  title="Gender Pay Equality Chart in USD"
                   type="bar"
                   data={{
                     labels: ["Male", "Female"],
                     datasets: [
                       {
-                        values: [70500, 41110]
+                        values: [
+                          departments.avgMaleSalary,
+                          departments.avgFemaleSalary
+                        ]
                       }
-                      //   { values: [0, 65500] }
                     ]
-                    // height: 300
                   }}
-                  //   colors={["red", "blue"]}
                 />
               </div>
             )}
