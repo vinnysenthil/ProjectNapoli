@@ -1,7 +1,6 @@
 var express = require('express');
 const sequelize = require('../services/sequelize');
 var router = express.Router();
-var cors = require('cors');
 
 // Test endpoint
 router.get('/', function(req, res, next) {
@@ -37,5 +36,6 @@ router.get('/messages', (req, res) => {
 // Load other routes
 router.use('/employees', require('./employees'));
 router.use('/salaries', require('./salaries'));
+router.use('/departments', require('./departments'));
 
 module.exports = router;
