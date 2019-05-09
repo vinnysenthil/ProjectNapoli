@@ -52,6 +52,11 @@ class FiltersWindow extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  componentDidMount() {
+    this.setState({ departmentChosen: this.props.departmentFilter });
+  }
+
+
   handleChange = event => {
     this.setState({ departmentChosen: event.target.value });
   };
@@ -70,8 +75,9 @@ class FiltersWindow extends Component {
       sales,
       research,
       customer_service,
-      handleAmenities,
-      handleFiltersApply
+      handleFilter,
+      handleFiltersApply,
+      departmentFilter
     } = this.props;
 
     return (
@@ -177,114 +183,7 @@ class FiltersWindow extends Component {
                     </RadioGroup>
                   </FormControl>
 
-                  {/* <Grid item>
-                  <FormControlLabel
-                    className={classes.rating}
-                    label="Marketing"
-                    control={
-                      <Checkbox
-                        checked={marketing}
-                        onChange={handleAmenities("marketing")}
-                      />
-                    }
-                  />
-                </Grid>
-                <Grid item>
-                  <FormControlLabel
-                    className={classes.rating}
-                    label="Finance"
-                    control={
-                      <Checkbox
-                        checked={finance}
-                        onChange={handleAmenities("finance")}
-                      />
-                    }
-                  />
-                </Grid>
-                <Grid item>
-                  <FormControlLabel
-                    className={classes.rating}
-                    label="Human Resources"
-                    control={
-                      <Checkbox
-                        checked={human_resources}
-                        onChange={handleAmenities("human_resources")}
-                      />
-                    }
-                  />
-                </Grid>
-                <Grid item>
-                  <FormControlLabel
-                    className={classes.rating}
-                    label="Production"
-                    control={
-                      <Checkbox
-                        checked={production}
-                        onChange={handleAmenities("production")}
-                      />
-                    }
-                  />
-                </Grid>
-                <Grid item>
-                  <FormControlLabel
-                    className={classes.rating}
-                    label="Development"
-                    control={
-                      <Checkbox
-                        checked={development}
-                        onChange={handleAmenities("development")}
-                      />
-                    }
-                  />
-                </Grid>
-                <Grid item>
-                  <FormControlLabel
-                    className={classes.rating}
-                    label="Quality Management"
-                    control={
-                      <Checkbox
-                        checked={quality_management}
-                        onChange={handleAmenities("quality_management")}
-                      />
-                    }
-                  />
-                </Grid>
-                <Grid item>
-                  <FormControlLabel
-                    className={classes.rating}
-                    label="Sales"
-                    control={
-                      <Checkbox
-                        checked={sales}
-                        onChange={handleAmenities("sales")}
-                      />
-                    }
-                  />
-                </Grid>
-                <Grid item>
-                  <FormControlLabel
-                    className={classes.rating}
-                    label="Research"
-                    control={
-                      <Checkbox
-                        checked={research}
-                        onChange={handleAmenities("research")}
-                      />
-                    }
-                  />
-                </Grid>
-                <Grid item>
-                  <FormControlLabel
-                    className={classes.rating}
-                    label="Customer Service"
-                    control={
-                      <Checkbox
-                        checked={customer_service}
-                        onChange={handleAmenities("customer_service")}
-                      />
-                    }
-                  />
-                </Grid> */}
+                  
                 </Grid>
                 <Divider />
               </Grid>
@@ -316,7 +215,7 @@ FiltersWindow.propTypes = {
   guest_rate: PropTypes.number.isRequired,
   price_low: PropTypes.number.isRequired,
   price_high: PropTypes.number.isrequired,
-  handleAmenities: PropTypes.func.isRequired,
+  handleFilter: PropTypes.func.isRequired,
   handleStarRatings: PropTypes.func.isRequired,
   handleGuestRatings: PropTypes.func.isRequired,
   handlePriceRangeChange: PropTypes.func.isRequired,

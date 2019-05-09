@@ -1,87 +1,91 @@
-const RuntimeVars = require('../services/RuntimeVars');
-const sequelize = require('../services/sequelize');
-const okta = require('@okta/okta-sdk-nodejs');
-const Sequelize = require('sequelize');
-var Twitter = require('twitter');
-var express = require('express');
+const RuntimeVars = require("../services/RuntimeVars");
+const sequelize = require("../services/sequelize");
+const okta = require("@okta/okta-sdk-nodejs");
+const Sequelize = require("sequelize");
+var Twitter = require("twitter");
+var express = require("express");
 var router = express.Router();
 
 // POST /api/employees/fire/:emp_no
-router.post('/fire/:emp_no', (req, res, next) => {
+router.post("/fire/:emp_no", (req, res, next) => {
+  const firedEmp = req.params.emp_no;
+  console.log;
+  sequelize.Employees.findByPk(firedEmp, {
+    include: [
+      {
+        model: sequelize.Titles,
+        where: { emp_no: Sequelize.col("employees.emp_no") },
+        attributes: ["title", "from_date", "to_date"]
+      }
+    ],
+    attributes: ["emp_no", "first_name", "last_name", "hire_date"]
+  })
+    .then(emp => {
+      // Number of Years Employee Worked
+      const numYears = 2019 - parseInt(emp.hire_date.split("-")[0]);
 
-    const firedEmp = req.params.emp_no;
-    console.log
-    sequelize.Employees.findByPk(firedEmp, {
-        include: 
-        [{
-            model: sequelize.Titles,
-            where: { emp_no: Sequelize.col('employees.emp_no') },
-            attributes: ['title', 'from_date', 'to_date']
-        }],
-        attributes: ['emp_no', 'first_name', 'last_name', 'hire_date']
-    }).then((emp) => {
+      // const client = new okta.Client({
+      //     orgUrl: RuntimeVars.OKTA.ORG,
+      //     token: RuntimeVars.OKTA.TOKEN
+      //   });
 
-        // Number of Years Employee Worked
-        const numYears = 2019 - parseInt(emp.hire_date.split('-')[0])
+      // // Grab Okta user
+      // client.getUser(`${ (emp.first_name + emp.last_name).toLowerCase() }@napoli.com`)
+      // .then(async user => {
 
-        // const client = new okta.Client({
-        //     orgUrl: RuntimeVars.OKTA.ORG,
-        //     token: RuntimeVars.OKTA.TOKEN
-        //   });
+      var twitterClient = new Twitter({
+        consumer_key: RuntimeVars.TWITTER.CONSUMER_KEY,
+        consumer_secret: RuntimeVars.TWITTER.CONSUMER_SECRET,
+        access_token_key: RuntimeVars.TWITTER.ACCESS_TOKEN_KEY,
+        access_token_secret: RuntimeVars.TWITTER.ACCESS_TOKEN_SECRET
+      });
 
-        // // Grab Okta user
-        // client.getUser(`${ (emp.first_name + emp.last_name).toLowerCase() }@napoli.com`)
-        // .then(async user => {
+      // // Deactivate and delete the user
+      // user.deactivate()
+      // .then(() => console.log('User has been deactivated'))
+      // .then(() => user.delete())
+      // .then(() => {
 
-            var twitterClient = new Twitter({
-                consumer_key: RuntimeVars.TWITTER.CONSUMER_KEY,
-                consumer_secret: RuntimeVars.TWITTER.CONSUMER_SECRET,
-                access_token_key: RuntimeVars.TWITTER.ACCESS_TOKEN_KEY,
-                access_token_secret: RuntimeVars.TWITTER.ACCESS_TOKEN_SECRET
-              });
-            
-            // // Deactivate and delete the user
-            // user.deactivate()
-            // .then(() => console.log('User has been deactivated'))
-            // .then(() => user.delete())
-            // .then(() => {
+      // Update DB status to fired
+      emp
+        .update({
+          fired: true
+        })
+        .then(async doc => {
+          async function tweetFiring() {
+            twitterClient.post(
+              "statuses/update",
+              {
+                status: `${emp.first_name} ${
+                  emp.last_name
+                } just got fired after ${numYears} years on the job. Everyone say goodbye!`
+              },
+              function(error, tweet, response) {
+                if (error) console.log(error);
+              }
+            );
+          }
 
-                // Update DB status to fired
-                emp.update({
-                    fired: true
-                }).then(async (doc) => {
+          await tweetFiring();
 
-                    async function tweetFiring() {
-                        twitterClient.post('statuses/update', 
-                            {status: `${emp.first_name} ${emp.last_name} just got fired after ${numYears} years on the job. Everyone say goodbye!`},  
-                            function(error, tweet, response) {
-                                if(error) console.log(error)
-                                
-                            }
-                        );
-                    }
+          return res.status(200).json({
+            unemployed: doc
+          });
+        })
+        .catch(err => {
+          return res.status(404).send("Unable to set fired status to Employee");
+        });
+      // });
 
-                    await tweetFiring()
+      // }).catch((oktaErr) => {
 
-                    return res.status(200).json({
-                        unemployed: doc
-                    })
-                }).catch((err) => {
-                    
-                    return res.status(404).send("Unable to set fired status to Employee");
-                })
-            // });
+      //     return res.status(404).json(oktaErr);
 
-        // }).catch((oktaErr) => {
-
-        //     return res.status(404).json(oktaErr);
-
-        // });
-
-    }).catch((err) => {
-        console.log(err)
-        return res.status(404).send("Sequelize for Employee to fire failed")
-
+      // });
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(404).send("Sequelize for Employee to fire failed");
     });
 });
 
@@ -111,7 +115,7 @@ router.get("/check/:full_name", (req, res, next) => {
     .then(emp => {
       authPack.id = emp[0].emp_no;
       authPack.fired = emp[0].fired || false;
-    
+
       if (emp[0].dept_managers.length) {
         authPack.manager = true;
         return res.status(200).json(authPack);
@@ -138,9 +142,6 @@ router.get("/search", (req, res, next) => {
   const pageStart = page * 20;
   const pageEnd = 21;
   var isThereMore = true;
-
-  console.log("name: " + req.query.query);
-  console.log("dept: " + req.query.dept);
 
   sequelize.Employees.findAll({
     where: {
@@ -212,7 +213,7 @@ router.get("/search", (req, res, next) => {
       });
 
       if (finalResults[20] === undefined) isThereMore = false;
-      else finalResults.pop()
+      else finalResults.pop();
 
       return res.status(200).json({
         finalResults,
@@ -221,7 +222,6 @@ router.get("/search", (req, res, next) => {
         dept,
         query
       });
-
     })
     .catch(err => {
       return res.status(404).json(err);

@@ -4,12 +4,13 @@ import axios from "axios";
 // do get request at routes/product.js with newQuery object
 export const submitQuery = newQuery => dispatch => {
   let deptSearch = newQuery.dept ? "&dept=" + newQuery.dept : "";
+  let pageSearch = newQuery.page ? "&page=" + newQuery.page : "";
 
   axios
     .get(
       `http://localhost:172/api/employees/search?query=${
         newQuery.query
-      }${deptSearch}`
+      }${deptSearch}${pageSearch}`
     )
 
     // if success then res.data will be the product object we looking for

@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import React, { Component } from "react";
-import { Container, Icon, Image, Menu } from "semantic-ui-react";
 import { checkAuthentication } from "../helpers";
 import SearchBar from "./SearchBar";
 import { submitQuery, saveQuery } from "../actions/searchActions";
@@ -17,7 +16,10 @@ import "./navbar.css";
 import { Button, Grid } from "@material-ui/core";
 
 // Actions
-import { checkCurrentEmployee } from "../actions/employeeActions";
+import {
+  checkCurrentEmployee,
+  clearEmployee
+} from "../actions/employeeActions";
 
 var checkedIn = false;
 
@@ -31,7 +33,6 @@ class Navbar extends Component {
     this.checkAuthentication = checkAuthentication.bind(this);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
-    // this.onSearchClick = this.onSearchClick.bind(this);
     this.onHandleSearchQuery = this.onHandleSearchQuery.bind(this);
   }
 
@@ -53,28 +54,29 @@ class Navbar extends Component {
 
   async login() {
     this.props.auth.login("/");
+
+    // if (this.state.authenticated && this.state.userinfo && !checkedIn) {
+    //   this.props.checkCurrentEmployee(this.state.userinfo.name);
+
+    //   checkedIn = true;
+    //   // window.location.reload();
+    // }
   }
 
   async logout() {
     this.props.auth.logout("/");
+    this.props.clearEmployee();
   }
-
-  // onSearchClick() {
-  //   //NOTE: we assume user will search for name
-  //   // submit query as object with to submitQuery at searchActions.js
-
-  //   let newQuery = {
-  //     query: this.state.searchQuery
-  //     // dept: 5
-  //   };
-  //   console.log("step1");
-  //   this.props.submitQuery(newQuery);
-  // }
 
   onHandleSearchQuery(newQueryString) {
     let newQuery = {
-      query: newQueryString
+      query: newQueryString,
+      page: 0,
+      dept: this.props.query.searchQuery
+        ? this.props.query.searchQuery.dept
+        : null
     };
+
     this.props.submitQuery(newQuery);
     this.props.saveQuery(newQueryString);
     this.props.history.push("/searchresult");
@@ -146,7 +148,6 @@ class Navbar extends Component {
           onHandleSearchQuery={this.onHandleSearchQuery}
           searchQuery={this.state.searchQuery}
         />
-        {/* <Grid className=" buttonSearch" item /> */}
       </Grid>
     );
 
@@ -201,12 +202,11 @@ Navbar.PropTypes = {
 };
 
 const mapStateToProps = state => ({
-  employee: state.employee
+  employee: state.employee,
+  query: state.query
 });
 
 export default connect(
   mapStateToProps,
-  { checkCurrentEmployee, submitQuery, saveQuery }
+  { checkCurrentEmployee, clearEmployee, submitQuery, saveQuery }
 )(withAuth(withRouter(Navbar)));
-
-// )(withStyles(styles)(withRouter(SearchWidget)));
