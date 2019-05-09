@@ -69,11 +69,11 @@ router.get('/:dept_no', (req, res, next) => {
                 }).then((totalFemaleSalary) => {
 
                     return res.status(200).json({
-                        male: numMales / total,
-                        female: numFemales / total ,
-                        avgMaleSalary: totalMaleSalary / numMales,
-                        avgFemaleSalary: totalFemaleSalary / numFemales,
-                        shareOfCompanyCost: (((totalMaleSalary/total) + (totalFemaleSalary/total)) * total) / 19106910329,
+                        male: Math.round(100 * (numMales / total)) / 100,
+                        female: Math.round(100 * (numFemales / total)) / 100,
+                        avgMaleSalary: Math.round(100 * (totalMaleSalary / numMales)) / 100,
+                        avgFemaleSalary: Math.round(100 * (totalFemaleSalary / numFemales)) / 100,
+                        shareOfCompanyCost: Math.round(100 * ((((totalMaleSalary/total) + (totalFemaleSalary/total)) * total) / 19106910329)) / 100,
                         totalEmployees: total 
                     });
 
