@@ -15,6 +15,7 @@ import TableBody from "@material-ui/core/TableBody";
 import Chart from "./Graph";
 
 // Actions
+import { clearDepartment } from "../actions/overviewActions";
 
 class DepartmentOverview extends Component {
   constructor(props) {
@@ -28,6 +29,10 @@ class DepartmentOverview extends Component {
     this.checkAuthentication();
   }
 
+  async componentWillUnmount() {
+    this.props.clearDepartment();
+  }
+
   async componentDidUpdate() {
     this.checkAuthentication();
   }
@@ -39,11 +44,30 @@ class DepartmentOverview extends Component {
   render() {
     let { departments } = this.props.overview;
 
+    let nameShort = null;
+    if (departments) {
+      nameShort = departments.deptName;
+
+      switch (departments.deptName) {
+        case "Human Resources":
+          nameShort = "HR";
+          break;
+        case "Development":
+          nameShort = "Develop";
+          break;
+        case "Quality Management":
+          nameShort = "Q. Mgmt";
+          break;
+        case "Customer Service":
+          nameShort = "C. Service";
+          break;
+      }
+    }
     return (
       <div>
         {this.state.authenticated !== null && (
           <div>
-            {this.state.authenticated && (
+            {this.state.authenticated && departments && (
               <div>
                 <Header as="h2">{departments.deptName}</Header>
                 <br />
@@ -53,7 +77,7 @@ class DepartmentOverview extends Component {
                   title="Share of total company expenses in %"
                   type="percentage"
                   data={{
-                    labels: [departments.deptName, "Other Departments"],
+                    labels: [nameShort, "Other Departments"],
                     datasets: [
                       {
                         values: [
@@ -64,8 +88,7 @@ class DepartmentOverview extends Component {
                     ]
                   }}
                 />
-                Share of total company expenses:{" "}
-                {departments.shareOfCompanyCost}
+                Share of total company expenses:
                 <br />
                 <Chart
                   title="Gender Equality Chart in %"
@@ -114,5 +137,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {}
+  { clearDepartment }
 )(withAuth(DepartmentOverview));
