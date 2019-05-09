@@ -48,7 +48,7 @@ class SearchResults extends Component {
     };
 
     // Methods passed to child components
-    this.handleAmenities = this.handleAmenities.bind(this);
+    this.handleFilter = this.handleFilter.bind(this);
     this.handleClickToEmployee = this.handleClickToEmployee.bind(this);
     this.handleResetSearchOverview = this.handleResetSearchOverview.bind(this);
 
@@ -84,7 +84,7 @@ class SearchResults extends Component {
   };
 
   // Used to store the amenities input in <FiltersWindow />
-  handleAmenities = name => event => {
+  handleFilter = name => event => {
     this.setState({
       [name]: event.target.checked
     });
@@ -96,18 +96,15 @@ class SearchResults extends Component {
     this.backendCall(dept);
   };
 
-  // Handles backend call for filter and sort
+  // Handles backend call for filter
   backendCall(deptNumber) {
-    /// get dept number
 
     let newQuery = {
       query: this.props.query.searchArgument,
       dept: deptNumber
-      // pageStart: 1,
     };
     this.props.submitQuery(newQuery);
-
-    // this.props.saveQuery(newQuery);
+    this.props.saveQuery(this.props.query.searchArgument);
   }
 
   // Handles 'go to individual employee overview'
@@ -118,35 +115,33 @@ class SearchResults extends Component {
   };
 
   // Handles navigation to previous page of pagination
-  goToPreviousPage = (queryResult, searchQuery) => event => {
+  goToPreviousPage = () => event => {
     event.preventDefault();
 
     window.scrollTo(0, 0);
-    queryResult.pageNumber--;
-    let lastIndex = queryResult.lastIndex - 2 * searchQuery.numResults;
-    if (lastIndex < 0 || queryResult.pageNumber === 1) {
-      lastIndex = 0;
-    }
-    let newQuery = searchQuery;
-    newQuery.lastIndex = lastIndex;
-    newQuery.pageNumber = queryResult.pageNumber;
 
-    this.props.saveQuery(newQuery);
+    let newQuery = {
+      query: this.props.query.searchArgument,
+      page: this.props.query.searchQuery.page-1,
+      dept: this.props.query.searchQuery.dept
+    };
     this.props.submitQuery(newQuery);
+    this.props.saveQuery(this.props.query.searchArgument);
   };
 
   // Handles navigation to next page of pagination
-  goToNextPage = (queryResult, searchQuery) => event => {
+  goToNextPage = () => event => {
     event.preventDefault();
-
     window.scrollTo(0, 0);
-    queryResult.pageNumber++;
-    let newQuery = searchQuery;
-    newQuery.lastIndex = queryResult.lastIndex;
-    newQuery.pageNumber = queryResult.pageNumber;
 
-    this.props.saveQuery(newQuery);
+    let newQuery = {
+      query: this.props.query.searchArgument,
+      page: this.props.query.searchQuery.page+1,
+      dept: this.props.query.searchQuery.dept
+
+    };
     this.props.submitQuery(newQuery);
+    this.props.saveQuery(this.props.query.searchArgument);
   };
 
   render() {
@@ -174,8 +169,8 @@ class SearchResults extends Component {
           </Grid>
         </Grid>
       );
-    } else if (this.props.query.searchQuery && searchQuery.length > 0) {
-      employees = searchQuery.map(employee => {
+    } else if (searchQuery && searchQuery.finalResults.length > 0) {
+      employees = searchQuery.finalResults.map(employee => {
         return (
           <Grid item xs={12}>
             <Card square="false">
@@ -251,23 +246,20 @@ class SearchResults extends Component {
           <IconButton
             onClick={this.goToPreviousPage()} //hotelQuery, searchQuery)}
             disabled={
-              true
-              //   loading == true || hotelQuery.pageNumber == "1" ? true : false
+              searchQuery && searchQuery.page === 0
             }
           >
             <NavigateBefore />
           </IconButton>
         </Grid>
         <Grid item>
-          <Typography variant="subtitle1">Page {1}</Typography>
-          {/* //hotelQuery.pageNumber}</Typography> */}
+          <Typography variant="subtitle1">Page {searchQuery ? (searchQuery.page+1) : "-"}</Typography>
         </Grid>
         <Grid item>
           <IconButton
             onClick={this.goToNextPage()} //hotelQuery, searchQuery)}
             disabled={
-              true
-              // loading == true || hotelQuery.nextExists != true ? true : false
+              searchQuery && !searchQuery.isThereMore
             }
           >
             <NavigateNext />
@@ -280,7 +272,7 @@ class SearchResults extends Component {
       <div style={{ minHeight: window.innerHeight - 180 }}>
         <Grid container direction="flow" spacing={8}>
           <FiltersWindow
-            handleAmenities={this.handleAmenities}
+            handleFilter={this.handleFilter}
             handleFiltersApply={this.handleFiltersApply}
             marketing={marketing}
             finance={finance}
@@ -291,6 +283,7 @@ class SearchResults extends Component {
             sales={sales}
             research={research}
             customer_service={customer_service}
+            departmentFilter={searchQuery && searchQuery.dept ? searchQuery.dept : "0"}
           />
           <Grid item xs={12} sm={8} md={9} lg={9}>
             <Grid container direction="row" justify="center" spacing={8}>
@@ -300,7 +293,7 @@ class SearchResults extends Component {
                 </Grid>
               </Grid>
             </Grid>
-            {searchQuery && searchQuery.length > 0 ? pagination : <div />}
+            {searchQuery && searchQuery.finalResults.length > 0 ? pagination : <div />}
           </Grid>
         </Grid>
       </div>
@@ -323,6 +316,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { submitQuery, getSomeEmployee }
-  //   { getIndividualHotelResult, submitQuery, saveQuery, clearData }
+  { submitQuery, getSomeEmployee, saveQuery }
 )(withWidth()(SearchResults));

@@ -129,17 +129,16 @@ router.get("/check/:full_name", (req, res, next) => {
 // Query String Paramaters:
 // query --- Search term, either full employee ID, or first or last name
 // dept  --- Department number to filter by
-// start --- Search result item to start at
-// end   --- Search result item to end at
+// page --- Search result item to start at
+
 
 router.get("/search", (req, res, next) => {
   const query = req.query.query || ".";
   const dept = req.query.dept || ".";
-  const pageStart = parseInt(req.query.start) || 0;
-  const pageEnd = parseInt(req.query.end) || 20;
-
-  console.log("name: " + req.query.query);
-  console.log("dept: " + req.query.dept);
+  const page = parseInt(req.query.page) || 0;
+  const pageStart = page * 20;
+  const pageEnd = 21;
+  var isThereMore = true;
 
   sequelize.Employees.findAll({
     where: {
@@ -210,7 +209,18 @@ router.get("/search", (req, res, next) => {
         return newItem;
       });
 
-      return res.status(200).send(finalResults);
+      if (finalResults[20] === undefined) isThereMore = false;
+      else finalResults.pop()
+
+      
+      return res.status(200).json({
+        finalResults,
+        isThereMore,
+        page,
+        dept,
+        query
+      });
+    
     })
     .catch(err => {
       return res.status(404).json(err);
