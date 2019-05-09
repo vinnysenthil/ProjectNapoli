@@ -1,7 +1,8 @@
 import {
   GET_EMPLOYEE,
   CHECK_EMPLOYEE,
-  GET_SOME_EMPLOYEE
+  GET_SOME_EMPLOYEE,
+  CLEAR_EMPLOYEE
 } from "../actions/types";
 
 const initialState = {
@@ -41,6 +42,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         someEmployeeData: action.payload
+      };
+    case CLEAR_EMPLOYEE:
+      return {
+        ...state,
+        employeeCheck: null,
+        someEmployeeData: null
       };
     default:
       return state;

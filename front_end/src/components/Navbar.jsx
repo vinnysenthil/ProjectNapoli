@@ -16,7 +16,10 @@ import "./navbar.css";
 import { Button, Grid } from "@material-ui/core";
 
 // Actions
-import { checkCurrentEmployee } from "../actions/employeeActions";
+import {
+  checkCurrentEmployee,
+  clearEmployee
+} from "../actions/employeeActions";
 
 var checkedIn = false;
 
@@ -51,17 +54,27 @@ class Navbar extends Component {
 
   async login() {
     this.props.auth.login("/");
+
+    // if (this.state.authenticated && this.state.userinfo && !checkedIn) {
+    //   this.props.checkCurrentEmployee(this.state.userinfo.name);
+
+    //   checkedIn = true;
+    //   // window.location.reload();
+    // }
   }
 
   async logout() {
     this.props.auth.logout("/");
+    this.props.clearEmployee();
   }
 
   onHandleSearchQuery(newQueryString) {
     let newQuery = {
       query: newQueryString,
       page: 0,
-      dept: this.props.query.searchQuery ? this.props.query.searchQuery.dept : null
+      dept: this.props.query.searchQuery
+        ? this.props.query.searchQuery.dept
+        : null
     };
 
     this.props.submitQuery(newQuery);
@@ -191,11 +204,9 @@ Navbar.PropTypes = {
 const mapStateToProps = state => ({
   employee: state.employee,
   query: state.query
-
 });
 
 export default connect(
   mapStateToProps,
-  { checkCurrentEmployee, submitQuery, saveQuery }
+  { checkCurrentEmployee, clearEmployee, submitQuery, saveQuery }
 )(withAuth(withRouter(Navbar)));
-
