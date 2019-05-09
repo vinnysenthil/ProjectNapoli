@@ -90,7 +90,6 @@ class DepartmentsOverview extends Component {
                   {DepartmentList.map(row => {
                     return (
                       <Grid item>
-                        <Link to="/profile">
                           <Card className={classes.card}>
                             <CardContent>
                               <Typography variant="h5" component="h2">
@@ -105,7 +104,6 @@ class DepartmentsOverview extends Component {
                               </Button>
                             </CardContent>
                           </Card>
-                        </Link>
                       </Grid>
                     );
                   })}
