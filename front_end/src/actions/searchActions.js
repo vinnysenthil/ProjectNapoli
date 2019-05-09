@@ -8,7 +8,7 @@ export const submitQuery = newQuery => dispatch => {
 
   axios
     .get(
-      `http://localhost:172/api/employees/search?query=${
+      `/api/employees/search?query=${
         newQuery.query
       }${deptSearch}${pageSearch}`
     )

@@ -2,6 +2,7 @@
   "name": "front_end",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:172",
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
@@ -39,9 +40,14 @@
     "styled-components": "^4.1.3"
   },
   "scripts": {
-    "start": "cross-env PORT=8080 react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "echo 'Tests not yet implemented' && exit 1",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  }
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).",
+  "main": "index.js",
+  "devDependencies": {},
+  "author": "",
+  "license": "ISC"
 }

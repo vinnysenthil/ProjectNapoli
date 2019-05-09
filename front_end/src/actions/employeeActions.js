@@ -11,7 +11,7 @@ import {
 // Checks employee status, gets employeeID and manager-boolean in return
 export const checkCurrentEmployee = employeeName => dispatch => {
   axios
-    .get(`http://localhost:172/api/employees/check/${employeeName}`)
+    .get(`/api/employees/check/${employeeName}`)
     .then(res =>
       dispatch({
         type: CHECK_EMPLOYEE,
@@ -29,7 +29,7 @@ export const checkCurrentEmployee = employeeName => dispatch => {
 // Get current profile
 export const getCurrentEmployee = employeeID => dispatch => {
   axios
-    .get(`http://localhost:172/api/employees/${employeeID}`)
+    .get(`/api/employees/${employeeID}`)
     .then(res =>
       dispatch({
         type: GET_EMPLOYEE,
@@ -47,7 +47,7 @@ export const getCurrentEmployee = employeeID => dispatch => {
 // Get current profile
 export const getSomeEmployee = employeeID => dispatch => {
   axios
-    .get(`http://localhost:172/api/employees/${employeeID}`)
+    .get(`/api/employees/${employeeID}`)
     .then(res =>
       dispatch({
         type: GET_SOME_EMPLOYEE,
@@ -65,7 +65,7 @@ export const getSomeEmployee = employeeID => dispatch => {
 // Fire an employee
 export const fireEmployee = employeeID => dispatch => {
   axios
-    .post(`http://localhost:172/api/employees/fire/${employeeID}`)
+    .post(`/api/employees/fire/${employeeID}`)
     .then(res =>
       dispatch({
         type: FIRE_EMPLOYEE,
