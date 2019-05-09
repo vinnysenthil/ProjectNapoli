@@ -1,4 +1,4 @@
-import { GET_DEPT } from "../actions/types";
+import { GET_DEPT, CLEAR_DEPT } from "../actions/types";
 
 const initialState = {
   departments: {
@@ -19,7 +19,11 @@ export default function(state = initialState, action) {
         ...state,
         departments: action.payload
       };
-
+    case CLEAR_DEPT:
+      return {
+        ...state,
+        departments: null
+      };
     default:
       return state;
   }

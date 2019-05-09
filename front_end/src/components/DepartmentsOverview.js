@@ -55,11 +55,12 @@ class DepartmentsOverview extends Component {
     this.props.auth.login("/");
   }
 
-  onclickDept(deptNumber) {
+  onclickDept = deptNumber => event => {
+    event.preventDefault();
     this.props.getDepartments(deptNumber);
 
     this.props.history.push("/individualDepartment");
-  }
+  };
 
   render() {
     const { classes } = this.props;
@@ -67,15 +68,15 @@ class DepartmentsOverview extends Component {
     let DepartmentList;
 
     DepartmentList = [
-      createData("Marketing", "1"),
-      createData("Finance", "2"),
-      createData("Human Resources", "3"),
-      createData("Production", "4"),
-      createData("Development", "5"),
-      createData("Quality Management", "6"),
-      createData("Sales", "7"),
-      createData("Research", "8"),
-      createData("Customer Service", "9")
+      createData("Marketing", "d001"),
+      createData("Finance", "d002"),
+      createData("Human Resources", "d003"),
+      createData("Production", "d004"),
+      createData("Development", "d005"),
+      createData("Quality Management", "d006"),
+      createData("Sales", "d007"),
+      createData("Research", "d008"),
+      createData("Customer Service", "d009")
     ];
 
     return (
@@ -90,20 +91,20 @@ class DepartmentsOverview extends Component {
                   {DepartmentList.map(row => {
                     return (
                       <Grid item>
-                          <Card className={classes.card}>
-                            <CardContent>
-                              <Typography variant="h5" component="h2">
-                                {row.firstCol}
-                              </Typography>
-                              <Button
-                                id="login-button"
-                                secondary
-                                onClick={this.onclickDept}
-                              >
-                                More Info
-                              </Button>
-                            </CardContent>
-                          </Card>
+                        <Card className={classes.card}>
+                          <CardContent>
+                            <Typography variant="h5" component="h2">
+                              {row.firstCol}
+                            </Typography>
+                            <Button
+                              id="login-button"
+                              secondary
+                              onClick={this.onclickDept(row.secondCol)}
+                            >
+                              More Info
+                            </Button>
+                          </CardContent>
+                        </Card>
                       </Grid>
                     );
                   })}

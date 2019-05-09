@@ -10,6 +10,7 @@ export const SAVE_QUERY = "SAVE_QUERY";
 
 // OVERVIEW
 export const GET_DEPT = "GET_DEPT";
+export const CLEAR_DEPT = "CLEAR_DEPT";
 
 // EMPLOYEE TYPES
 export const GET_EMPLOYEE = "GET_EMPLOYEE";
