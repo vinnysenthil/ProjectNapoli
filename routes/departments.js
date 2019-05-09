@@ -6,7 +6,42 @@ const moment = require('moment');
 var router = express.Router();
 
 router.get('/:dept_no', (req, res, next) => {
+
     const deptID = req.params.dept_no;
+    var deptFullName = " ";
+
+    switch (deptID) {
+        case "d001":
+          deptFullName = "Marketing";
+          break;
+        case "d002":
+          deptFullName = "Finance";
+          break;
+        case "d003":
+          deptFullName = "Human Resources";
+          break;
+        case "d004":
+          deptFullName = "Production";
+          break;
+        case "d005":
+          deptFullName = "Development";
+          break;
+        case "d006":
+          deptFullName = "Quality Management";
+          break;
+        case "d007":
+          deptFullName = "Sales";
+          break;
+        case "d008":
+          deptFullName = "Research";
+          break;
+        case "d009":
+          deptFullName = "Customer Service";
+          break;
+        default:
+          deptFullName = "Unknown";
+      }
+
     sequelize.Employees.count({
         where: {gender: 'M'},
         include: 
@@ -74,7 +109,8 @@ router.get('/:dept_no', (req, res, next) => {
                         avgMaleSalary: Math.round(100 * (totalMaleSalary / numMales)) / 100,
                         avgFemaleSalary: Math.round(100 * (totalFemaleSalary / numFemales)) / 100,
                         shareOfCompanyCost: Math.round(100 * ((((totalMaleSalary/total) + (totalFemaleSalary/total)) * total) / 19106910329)) / 100,
-                        totalEmployees: total 
+                        totalEmployees: total,
+                        deptName: deptFullName
                     });
 
                 }).catch((err) => { return res.status(404).json(err) });
