@@ -111,7 +111,7 @@ class Home extends Component {
                           style={{
                             paddingLeft: 5,
                             paddingRight: 5,
-                            width: 150
+                            width: 350
                           }}
                         >
                           {row.firstCol}

@@ -88,7 +88,6 @@ class DepartmentOverview extends Component {
                     ]
                   }}
                 />
-                Share of total company expenses:
                 <br />
                 <Chart
                   title="Gender Equality Chart in %"
