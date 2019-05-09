@@ -42,7 +42,10 @@ class Home extends Component {
   async componentDidUpdate() {
     this.checkAuthentication();
 
-    if (this.props.employee.employeeCheck)
+    if (
+      this.props.employee.employeeCheck &&
+      !this.props.employee.employeeData.emp_no
+    )
       this.props.getCurrentEmployee(this.props.employee.employeeCheck.id);
   }
 
@@ -135,7 +138,8 @@ class Home extends Component {
             ) : (
               <div>
                 {this.state.authenticated &&
-                this.props.employee.employeeCheck ? (
+                this.props.employee.employeeCheck &&
+                this.props.employee.employeeCheck.fired === true ? (
                   <div>YOUR CONTRACT HAS BEEN TERMINATED</div>
                 ) : null}
               </div>
