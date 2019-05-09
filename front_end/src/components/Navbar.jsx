@@ -36,7 +36,9 @@ class Navbar extends Component {
     this.onHandleSearchQuery = this.onHandleSearchQuery.bind(this);
   }
 
-  async componentWillMount() {}
+  async componentWillMount() {
+    this.checkAuthentication();
+  }
 
   async componentDidMount() {
     this.checkAuthentication();
@@ -54,13 +56,6 @@ class Navbar extends Component {
 
   async login() {
     this.props.auth.login("/");
-
-    // if (this.state.authenticated && this.state.userinfo && !checkedIn) {
-    //   this.props.checkCurrentEmployee(this.state.userinfo.name);
-
-    //   checkedIn = true;
-    //   // window.location.reload();
-    // }
   }
 
   async logout() {

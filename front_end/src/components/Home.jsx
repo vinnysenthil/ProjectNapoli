@@ -12,7 +12,10 @@ import TableRow from "@material-ui/core/TableRow";
 import TableBody from "@material-ui/core/TableBody";
 
 // Actions
-import { getCurrentEmployee } from "../actions/employeeActions";
+import {
+  getCurrentEmployee,
+  checkCurrentEmployee
+} from "../actions/employeeActions";
 
 let id = 0;
 function createData(firstCol, secondCol) {
@@ -29,7 +32,11 @@ class Home extends Component {
   }
 
   async componentDidMount() {
-    this.checkAuthentication();
+    await this.checkAuthentication();
+
+    if (this.state.authenticated && this.state.userinfo) {
+      await this.props.checkCurrentEmployee(this.state.userinfo.name);
+    }
   }
 
   async componentDidUpdate() {
@@ -164,5 +171,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getCurrentEmployee }
+  { getCurrentEmployee, checkCurrentEmployee }
 )(withAuth(Home));
