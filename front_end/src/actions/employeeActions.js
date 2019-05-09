@@ -4,7 +4,8 @@ import {
   GET_EMPLOYEE,
   CHECK_EMPLOYEE,
   GET_SOME_EMPLOYEE,
-  FIRE_EMPLOYEE
+  FIRE_EMPLOYEE,
+  CLEAR_EMPLOYEE
 } from "./types";
 
 // Checks employee status, gets employeeID and manager-boolean in return
@@ -77,4 +78,10 @@ export const fireEmployee = employeeID => dispatch => {
         payload: {}
       })
     );
+};
+
+export const clearEmployee = () => {
+  return {
+    type: CLEAR_EMPLOYEE
+  };
 };
